@@ -1,0 +1,62 @@
+---FILE DESCRIPTOR---
+
+A file descriptor is an int variable that uniquely identifies an open file.
+
+In C, like in most Unix systems, there are 3 standards file descriptors that are automatically added to the file descriptor table.
+These file descriptors are the standard input/output file descriptor and always have these values :
+
+0 : this file descriptor represents the stdin (=> standard input, the terminal). This is the file descriptor used when reading user input from the terminal.
+
+1 : this file descriptor represents the stdout (=> standard output, the terminal). This is the file descriptor used when writing to the terminal.
+
+2 : this file descriptor represents the stderr (=> standard error output, the terminal). This is the file descriptor used when writing an error to the terminal,
+the information is written the same way, but a program which logs errors to a file can redirect everything written to the stderr file descriptor to a file. It's
+managed in another way by the operating system.
+
+Term --------------------------> Description
+File Descriptor ---------------> This is the index of the File Table Entry in the file descriptor table.
+File Descriptor Table ---------> This is an array of File Table Entry, each process gets its own File Descriptor Table.
+File Table Entry --------------> A File Table Entry is a structure that contains informations about a file.
+Global File Table -------------> This is a system wide table containing all files. (It can't contain all files at once but the operating system will automatically
+									update the table if you request a file that's not in this table).
+
+When you use a file descriptor, with the read(2) function for example, the following will happen :
+1. Search for the file in the Global file table
+	a. If the file is found, go to next step.
+	b. If the file is not found, the operating system will update the Global file table to make the requested file available, then go back to step 1.
+2. Create a File table entry in the File descriptor table for the requested file.
+3. Assign the first unused File descriptor to the created file table entry.
+
+---open()---
+
+This function will allow you to open and access a file:
+int open (const char* path, int flags [, int mode ]);
+
+Path: corresponds to title or location of the file that you would like to open/create.
+Flags: types of access you want for the file:
+	O_RDONLY: In read-only mode, open the file.
+	O_WRONLY: In a write-only mode, open the file
+	O_RDWR: Open the file in reading and write mode
+	O_CREAT: This flag is applied to create a file if it doesn’t exist in the specified path or directory
+	O_EXCL: Prevents the file creation if it already exists in the directory or location.
+Return value: a file descriptor, a small, nonnegative integer that is an index to an entry in the process's table of open file descriptors. If there is an error
+			somewhere, the function will return -1 as a synonym of failure.
+
+---read()---
+
+ssize_t read(int fildes, void *buf, size_t nbyte);
+This function attempts to read nbyte bytes of data from the object referenced by the descriptor file into the buffer pointed to by buf.  The read() function
+starts at a position given by the pointer associated with fildes. At the end, the pointer is incremented by the number of bytes (nbyte) actually read.
+
+---STATIC VARIABLES---
+Static variables have the property of preserving their value even after they are out of their scope! Hence, a static variable preserves its previous value
+in its previous scope and is not initialized again in the new scope.
+
+Facts:
+1. A static int variable remains in memory while the program is running. A normal or auto variable is destroyed when a function call where the variable was
+declared is over.
+2. Static variables are allocated memory in the data segment, not the stack segment. (https://www.geeksforgeeks.org/memory-layout-of-c-program/)
+3. Static variables (like global variables) are initialized as 0 if not initialized explicitly. (without assigning a value later in the code https://www.geeksforgeeks.org/g-fact-53/)
+4. In C, static variables can only be initialized using constant literals. (https://www.geeksforgeeks.org/g-fact-80/)
+5. Static global variables and functions are also possible in C/C++. The purpose of these is to limit the scope of a variable or function to a file. (https://www.geeksforgeeks.org/what-are-static-functions-in-c/)
+6. Static variables should not be declared inside a structure.

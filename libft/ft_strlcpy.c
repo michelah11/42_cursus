@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:04:03 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/06/10 22:39:42 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/06/21 17:38:04 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	unsigned int	i;
-	size_t			src_len;
+	size_t	src_len;
 
-	if (!src)
-		return (0);
-	src_len = (unsigned int)ft_strlen(src);
-	if (!size)
-		return (src_len);
-	i = 0;
-	while (src[i] != '\0' && i < (size - 1))
+	src_len = 0;
+	if (size)
 	{
-		dst[i] = src[i];
-		i++;
+		size -= 1;
+		while (src[src_len] != '\0' && src_len < size)
+		{
+			dst[src_len] = src[src_len];
+			src_len++;
+		}
+		dst[src_len] = '\0';
 	}
-	dst[i] = '\0';
+	while (src[src_len])
+		src_len++;
 	return (src_len);
 }

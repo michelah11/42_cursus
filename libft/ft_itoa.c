@@ -6,14 +6,14 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 01:20:25 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/06/21 18:32:56 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/06/22 14:56:17 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-static int	ft_numlen(int n)
+int	ft_numlen(int n)
 {
 	int	len;
 
@@ -21,11 +21,8 @@ static int	ft_numlen(int n)
 	if (n == 0)
 		return (1);
 	if (n < 0)
-	{
-		n = -n;
 		len++;
-	}
-	while (n > 0)
+	while (n != 0)
 	{
 		n /= 10;
 		len++;
@@ -33,28 +30,44 @@ static int	ft_numlen(int n)
 	return (len);
 }
 
+int	ft_sign(int n)
+{
+	if (n < 0)
+		return (-1);
+	return (1);
+}
+
+int	absolute(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
 char	*ft_itoa(int n)
 {
-	size_t		len;
-	char		*str;
+	int		len;
+	int		sign;
+	char	*str;
 
+	len = ft_numlen(n);
+	sign = ft_sign(n);
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	len = ft_numlen(n);
 	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	if (n == 0)
-		str[0] = '0';
-	if (n < 0)
+	str[len--] = '\0';
+	while (len >= 0)
 	{
-		str[0] = '-';
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		str[--len] = '0' + (n % 10);
-		n /= 10;
+		if (sign < 0 && len == 0)
+			str[0] = '-';
+		else
+		{
+			str[len] = absolute(n) % 10 + 48;
+			n /= 10;
+		}
+		len --;
 	}
 	return (str);
 }

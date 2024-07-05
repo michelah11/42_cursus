@@ -10,15 +10,15 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        printf("Usage: %s <filename>\n", argv[0]);
-        return 1;
+        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+        return (1);
     }
 
     fd = open(argv[1], O_RDONLY);
     if (fd < 0)
     {
         perror("Error opening file");
-        return 1;
+        return (1);
     }
 
     while ((line = get_next_line(fd)) != NULL)
@@ -28,5 +28,5 @@ int main(int argc, char **argv)
     }
 
     close(fd);
-    return 0;
+    return (0);
 }

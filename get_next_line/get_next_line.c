@@ -6,91 +6,97 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 22:13:26 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/06/26 22:18:11 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/07/05 02:24:01 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*set_line(char *ln_bf)
+char	*set_line(char *line)
 {
-	char	*left_sub;
-	int		i;
+	char	*remainder;
+	int		nl_pos;
 
-	i = 0;
-	while (ln_bf[i] != '\n' && ln_bf[i] != '\0')
-		i++;
-	if (ln_bf[i] == '\0')
+	nl_pos = 0;
+	while (line[nl_pos] != '\n' && line[nl_pos] != '\0')
+		nl_pos++;
+	if (line[nl_pos] == '\0')
 		return (NULL);
 	else
 	{
-		left_sub = ft_substr(ln_bf, i + 1, ft_strlen(ln_bf) - i - 1);
-		if (!left_sub)
+		remainder = ft_substr(line, nl_pos + 1, ft_strlen(line) - nl_pos - 1);
+		if (!remainder)
 			return (NULL);
-		ln_bf[i + 1] = '\0';
+		line[nl_pos + 1] = '\0';
 	}
-	return (left_sub);
+	return (remainder);
 }
 
-char	*fill_line_buffer(int fd, char *left_sub, char *buffer)
+char	*read_from_fd(int fd, char *buffer, ssize_t *bytes)
 {
-	ssize_t	b_read;
-	char	*temp;
+	*bytes = read(fd, buffer, BUFFER_SIZE);
+	if (*bytes == -1)
+		return (NULL);
+	buffer[*bytes] = '\0';
+	return (buffer);
+}
 
-	b_read = 1;
-	while (b_read > 0)
+char	*process_buffer(char *content, char *buffer)
+{
+	char	*old;
+
+	if (!content)
+		content = ft_strdup("");
+	old = content;
+	content = ft_strjoin(old, buffer);
+	free(old);
+	return (content);
+}
+
+char	*fill_line_buffer(int fd, char *content, char *buffer)
+{
+	ssize_t	bytes;
+
+	bytes = 1;
+	while (bytes > 0)
 	{
-		b_read = read(fd, buffer, BUFFER_SIZE);
-		if (b_read == -1)
+		if (!read_from_fd(fd, buffer, &bytes))
 		{
-			free (left_sub);
+			free (content);
 			return (NULL);
 		}
-		else if (b_read == 0 && (!left_sub || left_sub[0] == '\0'))
-		{
-			free (left_sub);
-			left_sub = NULL;
+		if (bytes == 0)
 			break ;
-		}
-		buffer[b_read] = '\0';
-		if (!left_sub)
-			left_sub = ft_strdup("");
-		temp = left_sub;
-		left_sub = ft_strjoin(temp, buffer);
-		free (temp);
-		if (!left_sub)
+		content = process_buffer(content, buffer);
+		if (!content)
 			return (NULL);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
-	return (left_sub);
+	return (content);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*left_sub;
+	static char	*remainder;
 	char		*line;
 	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-	{
-		if (left_sub)
-		{
-			free(left_sub);
-			left_sub = NULL;
-		}
-		return (NULL);
-	}
+		return (free(remainder), remainder = NULL, NULL);
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	line = fill_line_buffer(fd, left_sub, buffer);
+	line = fill_line_buffer(fd, remainder, buffer);
 	free(buffer);
 	buffer = NULL;
 	if (!line)
 		return (NULL);
-	left_sub = set_line(line);
-	if (line && line[0] == '\0' && !left_sub)
-		return (ft_strdup(""));
+	remainder = set_line(line);
+	if (line && line[0] == '\0' && !remainder)
+	{
+		free(line);
+		return (NULL);
+	}
 	return (line);
 }

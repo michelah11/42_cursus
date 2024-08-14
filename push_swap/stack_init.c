@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:31 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 03:38:12 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:45:55 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,22 @@ static long	ft_atol(char *str)
 {
 	int		neg;
 	long	num;
-	char	*s;
 
-	s = str;
+	num = 0;
 	neg = 1;
-	while ((*s > 8 && *s < 14) || *s == 32)
-		s++;
-	if (*s == '+')
-		s++;
-	else if (*s == '-')
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
 	{
-		s++;
+		str++;
 		neg *= -1;
 	}
-	while (*s >= '0' && *s <= '9')
+	while (*str >= '0' && *str <= '9')
 	{
-		num = num * 10 + (*s - '0');
-		s++;
+		num = num * 10 + (*str - '0');
+		str++;
 	}
 	return (num * neg);
 }
@@ -42,7 +41,7 @@ void	stack_init(t_node **a, char **argv, bool argc_is_2)
 	long	nbr;
 	int		i;
 
-	i = 0;
+	i = 1;
 	while (argv[i])
 	{
 		if (error_syntax(argv[i]))

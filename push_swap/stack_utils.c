@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:42 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 04:23:27 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:46:58 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_node	*find_last_node(t_node *head)
 {
-	if (head == NULL)
+	if (!head)
 		return (NULL);
 	while (head->next)
 		head = head->next;
@@ -26,9 +26,9 @@ void	append_node(t_node **stack, int nbr)
 	t_node	*node;
 	t_node	*last_node;
 
-	if (stack == NULL)
+	if (!stack)
 		return ;
-	node = (t_node *)malloc(sizeof(t_node));
+	node = malloc(sizeof(t_node));
 	if (!node)
 		return ;
 	node->next = NULL;
@@ -51,7 +51,7 @@ t_node	*find_smallest(t_node *stack)
 	long		smallest;
 	t_node		*smallest_node;
 
-	if (stack == NULL)
+	if (!stack)
 		return (NULL);
 	smallest = LONG_MAX;
 	while (stack)
@@ -68,7 +68,7 @@ t_node	*find_smallest(t_node *stack)
 
 t_node	*return_cheapest(t_node *stack)
 {
-	if (stack == NULL)
+	if (!stack)
 		return (NULL);
 	while (stack)
 	{
@@ -83,7 +83,7 @@ int	stack_len(t_node *stack)
 {
 	int	count;
 
-	if (stack == NULL)
+	if (!stack)
 		return (0);
 	count = 0;
 	while (stack)

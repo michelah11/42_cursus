@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:35:01 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:33 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:47:36 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	stack_sorted(t_node *stack)
 {
-	if (stack == NULL)
+	if (!stack)
 		return (1);
 	while (stack->next)
 	{
@@ -30,7 +30,7 @@ static t_node	*find_highest(t_node *stack)
 	int			highest;
 	t_node		*highest_node;
 
-	if (stack == NULL)
+	if (!stack)
 		return (NULL);
 	highest = INT_MIN;
 	while (stack)

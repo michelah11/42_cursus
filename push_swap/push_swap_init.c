@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:10 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:28 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:44:29 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	set_current_position(t_node *stack)
 	int	centerline;
 
 	i = 0;
-	if (stack == NULL)
+	if (!stack)
 		return ;
 	centerline = stack_len(stack) / 2;
 	while (stack)
@@ -100,6 +100,7 @@ void	set_price(t_node *a, t_node *b)
 		b = b->next;
 	}
 }
+
 void	init_nodes(t_node *a, t_node *b)
 {
 	set_current_position(a);

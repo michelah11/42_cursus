@@ -6,19 +6,19 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:48 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:50 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:44:51 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	reverse_rotate(t_node **stack)
+static void	reverse_rotate(t_node **stack)
 {
 	t_node		*last_node;
 	int			len;
 
 	len = stack_len(*stack);
-	if (stack == NULL || *stack == NULL || len == 1)
+	if (!stack || !*stack || len == 1)
 		return ;
 	last_node = find_last_node(*stack);
 	last_node->previous->next = NULL;
@@ -32,14 +32,14 @@ void	rra(t_node **a, bool checker)
 {
 	reverse_rotate(a);
 	if (!checker)
-		write(1, "rra\n", 3);
+		write(1, "rra\n", 4);
 }
 
 void	rrb(t_node **b, bool checker)
 {
 	reverse_rotate(b);
 	if (!checker)
-		write(1, "rrb\n", 3);
+		write(1, "rrb\n", 4);
 }
 
 void	rrr(t_node **a, t_node **b, bool checker)
@@ -47,5 +47,5 @@ void	rrr(t_node **a, t_node **b, bool checker)
 	reverse_rotate(a);
 	reverse_rotate(b);
 	if (!checker)
-		write(1, "rrr\n", 3);
+		write(1, "rrr\n", 4);
 }

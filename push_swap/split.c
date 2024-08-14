@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:47 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:40:41 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	count_words(char *str, char c)
 	int		count;
 	bool	inwrd;
 
+	count = 0;
 	while (*str)
 	{
 		inwrd = false;
@@ -37,7 +38,7 @@ static int	count_words(char *str, char c)
 
 static char	*get_next_word(char *str, char c)
 {
-	static int		cursor;
+	static int		cursor = 0;
 	char			*word;
 	int				len;
 	int				i;
@@ -82,6 +83,6 @@ char	**ft_split(char *str, char c)
 		}
 		lst[i++] = get_next_word(str, c);
 	}
-	lst = NULL;
+	lst[i] = '\0';
 	return (lst);
 }

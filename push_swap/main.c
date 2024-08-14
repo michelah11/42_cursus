@@ -6,11 +6,12 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:31 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:43:05 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "stdio.h"
 
 int	main(int argc, char **argv)
 {
@@ -27,7 +28,7 @@ int	main(int argc, char **argv)
 	if (!stack_sorted(a))
 	{
 		if (stack_len(a) == 2)
-			ra(&a, false);
+			sa(&a, false);
 		else if (stack_len(a) == 3)
 			tiny_sort(&a);
 		else

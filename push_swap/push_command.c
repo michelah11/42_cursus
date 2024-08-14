@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:30 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 04:46:56 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:43:41 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	push(t_node **dest, t_node **src)
 {
 	t_node	*node_to_push;
 
-	if (*src == NULL)
+	if (!*src)
 		return ;
 	node_to_push = *src;
 	*src = (*src)->next;
 	if (*src)
 		(*src)->previous = NULL;
 	node_to_push->previous = NULL;
-	if (*dest == NULL)
+	if (!*dest)
 	{
 		*dest = node_to_push;
 		node_to_push->next = NULL;

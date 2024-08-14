@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:47 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 18:53:35 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:44:16 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,19 @@ void	push_swap(t_node **a, t_node **b)
 	{
 		while (len_a-- > 3)
 			pb(b, a, false);
-		tiny_sort(a);
-		while (*b)
-		{
-			init_nodes(*a, *b);
-			move_nodes(a, b);
-		}
-		set_current_position(*a);
-		smallest = find_smallest(*a);
-		if (smallest->above_median)
-			while (*a != smallest)
-				ra(a, false);
-		else
-			while (*a != smallest)
-				rra(a, false);
 	}
+	tiny_sort(a);
+	while (*b)
+	{
+		init_nodes(*a, *b);
+		move_nodes(a, b);
+	}
+	set_current_position(*a);
+	smallest = find_smallest(*a);
+	if (smallest->above_median)
+		while (*a != smallest)
+			ra(a, false);
+	else
+		while (*a != smallest)
+			rra(a, false);
 }

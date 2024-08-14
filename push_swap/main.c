@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/08 22:26:27 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 18:53:31 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,14 @@ int	main(int argc, char **argv)
 	else if (argc == 2)
 		argv = ft_split(argv[1], ' ');
 	stack_init(&a, argv, argc == 2);
+	if (!stack_sorted(a))
+	{
+		if (stack_len(a) == 2)
+			ra(&a, false);
+		else if (stack_len(a) == 3)
+			tiny_sort(&a);
+		else
+			push_swap(&a, &b);
+	}
+	free_stack(&a);
 }

@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/08 22:24:35 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/14 18:53:47 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static int	count_words(char *str, char c)
 {
 	int		count;
 	bool	inwrd;
-	char	*s;
 
 	while (*str)
 	{
@@ -68,14 +67,14 @@ char	**ft_split(char *str, char c)
 	count = count_words(str, c);
 	if (!count)
 		exit(1);
-	lst = (char *)malloc(sizeof(char *) * (size_t)(count + 2));
+	lst = malloc(sizeof(char *) * (size_t)(count + 2));
 	if (!lst)
 		return (NULL);
 	while (count-- >= 0)
 	{
 		if (i == 0)
 		{
-			lst[i] = (char)malloc(sizeof(char));
+			lst[i] = malloc(sizeof(char));
 			if (!lst[i])
 				return (NULL);
 			lst[i++][0] = '\0';

@@ -1,0 +1,53 @@
+----- INTRODUCTION -----
+--- MiniLibX ---
+MiniLibX is a minimalistic graphics library designed for basic screen rendering tasks.
+It offers straightforward window creation, basic drawing capabilities, limited image 
+functions, and an unconventional event management system, all without requiring 
+in-depth knowledge of X-Window or Cocoa.
+
+--- X-Window ---
+X-Window is a network-oriented graphical system used on Unix-based systems,
+facilitating remote desktop connections. A well-known example of its application is
+TeamViewer, which allows users to connect to and control remote desktops.
+
+----- GETTING STARTED -----
++ For Linux, Codam_provided zip file containing a version of MiniLibX that's compatible
+with Linux. This version has the same functions and function calls as other versions.
++ However, that memory management for images might differ due to architecture-specific
+implementations.
++ The MLX for Linux should be unzipped into a new folder named 'mlx_linux' at the root of
+the project.
++ MiniLibX for Linux requires the xorg, x11, and zlib libraries, so the following dependencies
+are needed tobe installed: xorg, libxext-dev, and zlib1g-dev.
+Here is the command :
+sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev libbsd-dev
+
++ To configure MLX, configure script located in the root of the repositoryneed to be run,
+and the setup will be complete.
++ For compiling object files, add the following rule to the makefile, assuming the MLX for
+Linux source is in a directory named mlx_linux at the root of the project:
+
+%.o: %.c
+	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
+
++ To link with the required internal Linux API, use the following rule:
+
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+
+----- INITIALIZATION -----
++ Need to include the "mlx.h" header to acces all the functions.
++ The execute the "mlx_init" function to establish a connection to the correct 
+graphical system and will return  a "void *" which ill hold the locaion of the MLX 
+insatance.
++ Nothing pops up and nothing is rendered. No window has been created.
++ This can be achieved by calling the "mlx_new_window" function and will return also a
+pointer of the created window. This window will be given a HEIGHT, WIDTH  and TITLE.
++ "mlx_loop" needs to be called to initiate the window rendering.
+
+----- WRITING PIXELS TO A IMAGE -----
++ The "mls_pixel_put" is very slow. It tries o push the pixel instatntly o the window
+(while not waiting to the frame t be rendered).
++ There will be need to buffer all of the needed pixels to an image, then push to the window.
++ If an image is initiated few pointers need to be passed to which it will important variabes:
+++ bpp (bits per pixel): 

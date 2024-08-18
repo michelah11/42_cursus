@@ -6,13 +6,13 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:30 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 21:43:41 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/18 18:28:00 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	push(t_node **dest, t_node **src)
+static void	push(t_node **dest, t_node **src)
 {
 	t_node	*node_to_push;
 
@@ -21,8 +21,8 @@ void	push(t_node **dest, t_node **src)
 	node_to_push = *src;
 	*src = (*src)->next;
 	if (*src)
-		(*src)->previous = NULL;
-	node_to_push->previous = NULL;
+		(*src)->prev = NULL;
+	node_to_push->prev = NULL;
 	if (!*dest)
 	{
 		*dest = node_to_push;
@@ -31,7 +31,7 @@ void	push(t_node **dest, t_node **src)
 	else
 	{
 		node_to_push->next = *dest;
-		node_to_push->next->previous = node_to_push;
+		node_to_push->next->prev = node_to_push;
 		*dest = node_to_push;
 	}
 }

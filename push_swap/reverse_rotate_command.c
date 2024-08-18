@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:48 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 21:44:51 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:38:01 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 static void	reverse_rotate(t_node **stack)
 {
 	t_node		*last_node;
-	int			len;
 
-	len = stack_len(*stack);
-	if (!stack || !*stack || len == 1)
+	if (!*stack || !(*stack)->next)
 		return ;
 	last_node = find_last_node(*stack);
-	last_node->previous->next = NULL;
+	last_node->prev->next = NULL;
 	last_node->next = *stack;
-	last_node->previous = NULL;
+	last_node->prev = NULL;
 	*stack = last_node;
-	last_node->next->previous = last_node;
+	last_node->next->prev = last_node;
 }
 
 void	rra(t_node **a, bool checker)

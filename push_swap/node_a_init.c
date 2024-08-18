@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_init.c                                   :+:      :+:    :+:   */
+/*   node_a_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:10 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 21:44:29 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:47:46 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,50 +33,50 @@ void	set_current_position(t_node *stack)
 	}
 }
 
-static void	set_target_node(t_node *a, t_node *b)
+static void	set_a_target_node(t_node *a, t_node *b)
 {
-	t_node		*current_a;
+	t_node		*current_b;
 	t_node		*target_node;
 	long		best_match_index;
 
 	while (b)
 	{
 		best_match_index = LONG_MAX;
-		current_a = a;
-		while (current_a)
+		current_b = b;
+		while (current_b)
 		{
-			if (current_a->number > b->number
-				&& current_a->number < best_match_index)
+			if (current_b->number > a->number
+				&& current_b->number < best_match_index)
 			{
-				best_match_index = current_a->number;
-				target_node = current_a;
+				best_match_index = current_b->number;
+				target_node = current_b;
 			}
-			current_a = current_a->next;
+			current_b = current_b->next;
 		}
 		if (LONG_MAX == best_match_index)
-			b->target = find_smallest(a);
+			a->target = find_max(b);
 		else
-			b->target = target_node;
-		b = b->next;
+			a->target = target_node;
+		a = a->next;
 	}
 }
 
-void	set_cheapest(t_node *b)
+void	set_cheapest(t_node *stack)
 {
 	long		best_match_value;
 	t_node		*best_match_node;
 
-	if (b == NULL)
+	if (!stack)
 		return ;
 	best_match_value = LONG_MAX;
-	while (b)
+	while (stack)
 	{
-		if (b->push_price < best_match_value)
+		if (stack->push_price < best_match_value)
 		{
-			best_match_value = b->push_price;
-			best_match_node = b;
+			best_match_value = stack->push_price;
+			best_match_node = stack;
 		}
-		b = b->next;
+		stack = stack->next;
 	}
 	best_match_node->cheapest = true;
 }
@@ -90,22 +90,22 @@ void	set_price(t_node *a, t_node *b)
 	len_b = stack_len(b);
 	while (b)
 	{
-		b->push_price = b->current_position;
-		if ((!(b->above_median)))
-			b->push_price = len_b - (b->current_position);
-		if (b->target->above_median)
-			b->push_price += b->target->current_position;
+		a->push_price = a->current_position;
+		if ((!(a->above_median)))
+			a->push_price = len_a - (a->current_position);
+		if (a->target->above_median)
+			a->push_price += a->target->current_position;
 		else
-			b->push_price += len_a - (b->target->current_position);
-		b = b->next;
+			a->push_price += len_b - (a->target->current_position);
+		a = a->next;
 	}
 }
 
-void	init_nodes(t_node *a, t_node *b)
+void	node_a_init(t_node *a, t_node *b)
 {
 	set_current_position(a);
 	set_current_position(b);
-	set_target_node(a, b);
+	set_a_target_node(a, b);
 	set_price(a, b);
-	set_cheapest(b);
+	set_cheapest(a);
 }

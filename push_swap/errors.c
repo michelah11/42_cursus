@@ -1,27 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_free.c                                       :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:13:59 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 23:03:13 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:46:04 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	free_matrix(char **argv)
+int	error_syntax(char *arg)
 {
-	int	i;
+	if (!(*arg == '+' || *arg == '-'
+			|| (*arg >= '0' && *arg <= '9')))
+		return (1);
+	if ((*arg == '+' || *arg == '-')
+		&& !(arg[1] >= '0' && arg[1] <= '9'))
+		return (1);
+	while (*++arg)
+	{
+		if (!(*arg >= '0' && *arg <= '9'))
+			return (1);
+	}
+	return (0);
+}
 
-	i = 0;
-	if (!argv || !*argv)
-		return ;
-	while (argv[i])
-		free(argv[i++]);
-	free(argv);
+int	error_duplicate(t_node *a, int nbr)
+{
+	if (!a)
+		return (0);
+	while (a)
+	{
+		if (a->number == nbr)
+			return (1);
+		a = a->next;
+	}
+	return (0);
 }
 
 void	free_stack(t_node **stack)
@@ -41,40 +58,9 @@ void	free_stack(t_node **stack)
 	*stack = NULL;
 }
 
-void	error_free(t_node **a, char **argv, bool argc_is_2)
+void	free_errors(t_node **a)
 {
 	free_stack(a);
-	if (argc_is_2)
-		free_matrix(argv);
 	write(1, "Error\n", 6);
 	exit(1);
-}
-
-int	error_syntax(char *str_nbr)
-{
-	if (!(*str_nbr == '+' || *str_nbr == '-'
-			|| (*str_nbr >= '0' && *str_nbr <= '9')))
-		return (1);
-	if ((*str_nbr == '+' || *str_nbr == '-')
-		&& !(str_nbr[1] >= '0' && str_nbr[1] <= '9'))
-		return (1);
-	while (*++str_nbr)
-	{
-		if (!(*str_nbr >= '0' && *str_nbr <= '9'))
-			return (1);
-	}
-	return (0);
-}
-
-int	error_repetition(t_node *a, int nbr)
-{
-	if (!a)
-		return (0);
-	while (a)
-	{
-		if (a->number == nbr)
-			return (1);
-		a = a->next;
-	}
-	return (0);
 }

@@ -6,83 +6,98 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/14 21:40:41 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:19:25 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	count_words(char *str, char c)
+static int	count_words(char *s, char c)
 {
 	int		count;
-	bool	inwrd;
+	bool	inside_word;
 
 	count = 0;
-	while (*str)
+	while (*s)
 	{
-		inwrd = false;
-		while (*str == c && *str)
-			str++;
-		while (*str != c && *str)
+		inside_word = false;
+		while (*s == c && *s)
+			s++;
+		while (*s != c && *s)
 		{
-			if (!inwrd)
+			if (!inside_word)
 			{
 				count++;
-				inwrd = true;
+				inside_word = true;
 			}
-			str++;
+			s++;
 		}
 	}
 	return (count);
 }
 
-static char	*get_next_word(char *str, char c)
+static char	*get_next_word(char *s, char c)
 {
 	static int		cursor = 0;
-	char			*word;
+	char			*next_word;
 	int				len;
 	int				i;
 
 	len = 0;
 	i = 0;
-	while (str[cursor] == c)
+	while (s[cursor] == c)
 		cursor++;
-	while ((str[cursor + len] != c) && str[cursor + len])
+	while ((s[cursor + len] != c) && s[cursor + len])
 		len++;
-	word = malloc((size_t)len * sizeof(char) + 1);
-	if (!word)
+	next_word = malloc((size_t)len * sizeof(char) + 1);
+	if (!next_word)
 		return (NULL);
-	while ((str[cursor] != c) && str[cursor])
-		word[i++] = str[cursor++];
-	word[i] = '\0';
-	return (word);
+	while ((s[cursor] != c) && s[cursor])
+		next_word[i++] = s[cursor++];
+	next_word[i] = '\0';
+	return (next_word);
 }
 
 char	**ft_split(char *str, char c)
 {
-	char	**lst;
-	int		count;
+	char	**dest;
+	int		word_count;
 	int		i;
 
 	i = 0;
-	count = count_words(str, c);
-	if (!count)
+	word_count = count_words(str, c);
+	if (!word_count)
 		exit(1);
-	lst = malloc(sizeof(char *) * (size_t)(count + 2));
-	if (!lst)
+	dest = malloc(sizeof(char *) * (size_t)(word_count + 2));
+	if (!dest)
 		return (NULL);
-	while (count-- >= 0)
+	while (word_count-- >= 0)
 	{
 		if (i == 0)
 		{
-			lst[i] = malloc(sizeof(char));
-			if (!lst[i])
+			dest[i] = malloc(sizeof(char));
+			if (!dest[i])
 				return (NULL);
-			lst[i++][0] = '\0';
+			dest[i++][0] = '\0';
 			continue ;
 		}
-		lst[i++] = get_next_word(str, c);
+		dest[i++] = get_next_word(str, c);
 	}
-	lst[i] = '\0';
-	return (lst);
+	dest[i] = '\0';
+	return (dest);
+}
+
+void	free_args(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		argv[i] = NULL;
+		i++;
+	}
+	free(argv);
+	argv = NULL;
 }

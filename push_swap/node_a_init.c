@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:10 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/19 03:55:01 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 11:05:43 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	set_price(t_node *a, t_node *b)
 
 	len_a = stack_len(a);
 	len_b = stack_len(b);
-	while (b)
+	while (a)
 	{
 		a->push_price = a->current_position;
 		if (!(a->above_median))

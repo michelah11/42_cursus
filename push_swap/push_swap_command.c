@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:47 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/19 03:55:42 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 11:03:06 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	rotate_both(t_node **a, t_node **b, t_node *cheapest_node)
 {
-	while (*a != cheapest_node->target && *b != cheapest_node)
+	while (*b != cheapest_node->target && *a != cheapest_node)
 		rr(a, b, false);
 	set_current_position(*a);
 	set_current_position(*b);
@@ -22,7 +22,7 @@ static void	rotate_both(t_node **a, t_node **b, t_node *cheapest_node)
 
 static void	reverse_rotate_both(t_node **a, t_node **b, t_node *cheapest_node)
 {
-	while (*a != cheapest_node->target && *b != cheapest_node)
+	while (*b != cheapest_node->target && *a != cheapest_node)
 		rrr(a, b, false);
 	set_current_position(*a);
 	set_current_position(*b);

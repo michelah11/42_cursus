@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:31 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 17:49:31 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 03:33:51 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	append_node(t_node **stack, int nbr)
 		return ;
 	node->next = NULL;
 	node->number = nbr;
-	if (*stack == NULL)
+	if (!(*stack))
 	{
 		*stack = node;
 		node->prev = NULL;
@@ -66,7 +66,7 @@ void	stack_init(t_node **a, char **argv)
 	long	nbr;
 	int		i;
 
-	i = 1;
+	i = 0;
 	while (argv[i])
 	{
 		if (error_syntax(argv[i]))

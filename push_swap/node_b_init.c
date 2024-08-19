@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 17:14:04 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 17:19:18 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 03:54:25 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	set_b_target_node(t_node *a, t_node *b)
 {
-	t_node		*current_a;
-	t_node		*target_node;
-	long		best_match_index;
+	t_node	*current_a;
+	t_node	*target_node;
+	long	best_match_index;
 
 	while (b)
 	{
@@ -32,8 +32,8 @@ static void	set_b_target_node(t_node *a, t_node *b)
 			}
 			current_a = current_a->next;
 		}
-		if (LONG_MAX == best_match_index)
-			b->target = find_max(a);
+		if (best_match_index == LONG_MAX)
+			b->target = find_min(a);
 		else
 			b->target = target_node;
 		b = b->next;

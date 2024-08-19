@@ -6,12 +6,11 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:32:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 16:46:31 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 02:03:27 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include "stdio.h"
 
 int	main(int argc, char **argv)
 {
@@ -25,6 +24,8 @@ int	main(int argc, char **argv)
 	else if (argc == 2)
 		argv = ft_split(argv[1], ' ');
 	stack_init(&a, argv + 1);
+	if (argc == 2)
+		free_args(argv);
 	if (!stack_sorted(a))
 	{
 		if (stack_len(a) == 2)
@@ -35,4 +36,5 @@ int	main(int argc, char **argv)
 			turk_sort(&a, &b);
 	}
 	free_stack(&a);
+	return (0);
 }

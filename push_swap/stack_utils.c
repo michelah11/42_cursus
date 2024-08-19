@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:42 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 16:48:03 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 03:55:15 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,70 +21,70 @@ int	stack_len(t_node *stack)
 	count = 0;
 	while (stack)
 	{
-		count++;
 		stack = stack->next;
+		count++;
 	}
 	return (count);
 }
 
-bool	stack_sorted(t_node *stack)
+bool	stack_sorted(t_node *node)
 {
-	if (!stack)
+	if (!node)
 		return (1);
-	while (stack->next)
+	while (node->next)
 	{
-		if (stack->number > stack->next->number)
+		if (node->number > node->next->number)
 			return (false);
-		stack = stack->next;
+		node = node->next;
 	}
 	return (true);
 }
 
-t_node	*find_last_node(t_node *head)
+t_node	*find_last_node(t_node *node)
 {
-	if (!head)
+	if (!node)
 		return (NULL);
-	while (head->next)
-		head = head->next;
-	return (head);
+	while (node->next)
+		node = node->next;
+	return (node);
 }
 
-t_node	*find_min(t_node *stack)
+t_node	*find_min(t_node *node)
 {
 	long		min;
 	t_node		*min_node;
 
-	if (!stack)
+	if (!node)
 		return (NULL);
 	min = LONG_MAX;
-	while (stack)
+	while (node)
 	{
-		if (stack->number < min)
+		if (node->number < min)
 		{
-			min = stack->number;
-			min_node = stack;
+			min = node->number;
+			min_node = node;
 		}
-		stack = stack->next;
+		node = node->next;
 	}
 	return (min_node);
 }
 
-t_node	*find_max(t_node *stack)
+t_node	*find_max(t_node *node)
 {
-	long		max;
-	t_node		*max_node;
+	long	max;
+	t_node	*max_node;
 
-	if (!stack)
+	if (!node)
 		return (NULL);
-	max = LONG_MAX;
-	while (stack)
+	max = LONG_MIN;
+	while (node)
 	{
-		if (stack->number > max)
+		if (node->number > max)
 		{
-			max = stack->number;
-			max_node = stack;
+			max = node->number;
+			max_node = node;
 		}
-		stack = stack->next;
+		node = node->next;
 	}
 	return (max_node);
 }

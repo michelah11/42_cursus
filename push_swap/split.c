@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:20 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 16:19:25 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 04:01:47 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,33 +58,23 @@ static char	*get_next_word(char *s, char c)
 	return (next_word);
 }
 
-char	**ft_split(char *str, char c)
-{
-	char	**dest;
-	int		word_count;
-	int		i;
+char **ft_split(char *str, char c) {
+    char **dest;
+    int word_count;
+    int i;
 
-	i = 0;
-	word_count = count_words(str, c);
-	if (!word_count)
-		exit(1);
-	dest = malloc(sizeof(char *) * (size_t)(word_count + 2));
-	if (!dest)
-		return (NULL);
-	while (word_count-- >= 0)
-	{
-		if (i == 0)
-		{
-			dest[i] = malloc(sizeof(char));
-			if (!dest[i])
-				return (NULL);
-			dest[i++][0] = '\0';
-			continue ;
-		}
-		dest[i++] = get_next_word(str, c);
-	}
-	dest[i] = '\0';
-	return (dest);
+    i = 0;
+    word_count = count_words(str, c);
+    if (!word_count)
+        exit(1); // Consider handling this error more gracefully
+    dest = malloc(sizeof(char *) * (size_t)(word_count + 1)); // Allocate for all words + NULL
+    if (!dest)
+        return (NULL);
+    while (word_count-- > 0) {
+        dest[i++] = get_next_word(str, c);
+    }
+    dest[i] = NULL;
+    return (dest);
 }
 
 void	free_args(char **argv)

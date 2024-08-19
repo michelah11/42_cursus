@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:26 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/18 18:13:33 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/19 03:55:09 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ void	rra(t_node **a, bool checker);
 void	rrb(t_node **b, bool checker);
 void	rrr(t_node **a, t_node **b, bool checker);
 void	tiny_sort(t_node **a);
+void	free_args(char **argv);
 
 #endif

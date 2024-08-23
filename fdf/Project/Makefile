@@ -1,66 +1,75 @@
-NAME = fdf
-LIBFT = libft/
-GNL = get_next_line/
-MLX = minilibx/
-LIBFT_A = $(addprefix $(LIBFT), libft.a)
-GNL_A = $(addprefix $(GNL), gnl.a)
-MLX_A = $(addprefix $(MLX), mlx.a)
-
+# Compiler and flags
 CC = gcc
-INCLUDE = includes
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE)
-RM = rm -f
-SRCS = main.c
+CFLAGS = -Wall -Wextra -Werror -Iincludes
 
-OBJS = $(SRCS:%.c=%.o)
+# Directories
+SRCS_DIR = srcs/
+OBJS_DIR = objs/
+LIBFT_DIR = libft/
+GNL_DIR = get_next_line/
+MLX_DIR = minilibx/
 
+# Libraries
+LIBFT_A = $(LIBFT_DIR)libft.a
+GNL_A = $(GNL_DIR)gnl.a
+MLX_A = $(MLX_DIR)mlx.a
+
+# Source files and corresponding object files
+SRCS = $(wildcard $(SRCS_DIR)*.c)
+OBJS = $(patsubst $(SRCS_DIR)%.c,$(OBJS_DIR)%.o,$(SRCS))
+
+# Executable name
+NAME = fdf
+
+# Default target
 all: $(NAME)
 
+# Link the final executable
 $(NAME): $(OBJS) $(LIBFT_A) $(GNL_A) $(MLX_A)
-		@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -L$(GNL) -lgnl -L$(MLX) -lmlx -lX11 -lXext -lm -o $(NAME)
-		@echo "Linked into executable."
+	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lbsd -o $(NAME)
+	@echo "Linked into executable $(NAME)."
 
+# Compile object files
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled $< into $@."
+
+# Ensure necessary libraries are built
 $(LIBFT_A):
-		@$(MAKE) -s -C $(LIBFT)
-		@echo "Compiled $(LIBFT_A)"
+	@$(MAKE) -s -C $(LIBFT_DIR)
+	@echo "Compiled $(LIBFT_A)."
 
 $(GNL_A):
-		@$(MAKE) -s -C $(GNL)
-		@echo "Compiled $(GNL_A)"
+	@$(MAKE) -s -C $(GNL_DIR)
+	@echo "Compiled $(GNL_A)."
 
 $(MLX_A):
-		@$(MAKE) -s -C $(MLX)
-		@echo "Compiled $(MLX_A)"
+	@$(MAKE) -s -C $(MLX_DIR)
+	@echo "Compiled $(MLX_A)."
 
-bonus:	all
+# Create object directory if it doesn't exist
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
 
-.c.o:
-		@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-		@echo "Compiling $<."
-
+# Clean object files
 localclean:
-		@$(RM) $(OBJS)
-		@echo "Removed object files."
+	@$(RM) $(OBJS)
+	@echo "Removed object files."
 
+# Clean all object files and libraries
 clean: localclean
-		@$(MAKE) clean -s -C $(LIBFT)
-		@echo "Clean libft."
-		@$(MAKE) clean -s -C $(GNL)
-		@echo "Clean gnl."
-		@$(MAKE) clean -s -C $(MLX)
-		@echo "Clean mlx."
-		
+	@$(MAKE) clean -s -C $(LIBFT_DIR)
+	@$(MAKE) clean -s -C $(GNL_DIR)
+	@$(MAKE) clean -s -C $(MLX_DIR)
+	@echo "Cleaned all libraries."
 
-fclean: localclean
-		@$(MAKE) fclean -s -C $(LIBFT)
-		@echo "Full clean libft."
-		@$(MAKE) fclean -s -C $(GNL)
-		@echo "Full clean gnl."
-		@$(MAKE) clean -s -C $(MLX)
-		@echo "Clean mlx."
-		@$(RM) $(NAME)
-		@echo "Removed executable"
+# Clean everything including the executable
+fclean: clean
+	@$(RM) $(NAME)
+	@echo "Removed executable $(NAME)."
 
-re:		fclean all
+# Rebuild everything
+re: fclean all
 
-.PHONY:	all clean fclean re localclean bonus
+.PHONY: all clean fclean re localclean

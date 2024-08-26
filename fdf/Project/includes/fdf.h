@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 00:43:50 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 03:54:20 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:09:23 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <math.h>
-# include "mlx.h"
+# include "../minilibx/mlx.h"
 # include "libft.h"
 # include "get_next_line.h"
 # include "keys.h"

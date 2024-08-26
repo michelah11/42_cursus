@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 23:41:47 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:16:55 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:41:27 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static void	key_scale(int keycode, t_fdf *fdf)
 		fdf->cam->scale_factor += 1;
 	else if (keycode == KEY_MINUS)
 		fdf->cam->scale_factor -= 1;
-	else if (keycode == KEY_Z)
-		fdf->cam->scale_z += 0.1;
-	else if (keycode == KEY_X)
+	else if (keycode == KEY_Z && fdf->cam->scale_z > -1)
 		fdf->cam->scale_z -= 0.1;
+	else if (keycode == KEY_X && fdf->cam->scale_z < 1)
+		fdf->cam->scale_z += 0.1;
 }
 
 static void	key_rotate(int keycode, t_fdf *fdf)
@@ -55,11 +55,11 @@ static void	key_rotate(int keycode, t_fdf *fdf)
 static void	key_project(int keycode, t_fdf *fdf)
 {
 	if (keycode == KEY_P)
-		fdf->cam->projection += PERSPECTIVE;
+		fdf->cam->projection = PERSPECTIVE;
 	else if (keycode == KEY_I)
-		fdf->cam->projection -= ISOMETRIC;
+		fdf->cam->projection = ISOMETRIC;
 	else if (keycode == KEY_O)
-		fdf->cam->projection += TOP;
+		fdf->cam->projection = TOP;
 }
 
 int	key_handle(int keycode, t_fdf *fdf)

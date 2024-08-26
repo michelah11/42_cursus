@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 00:43:50 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:30:47 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:54:20 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ t_map	*init_map(void);
 t_fdf	*init_fdf(char *file_name);
 void	reset(t_fdf *fdf);
 float	scale_to_fit(t_map *map);
-void	center_of_origin(t_map *map);
+void	center_to_origin(t_map *map);
 t_point	**init_coordinates(int width, int depth);
 void	error(int exit_code);
 void	bresenham(t_fdf *fdf, t_point start, t_point end);

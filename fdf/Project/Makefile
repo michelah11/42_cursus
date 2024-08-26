@@ -1,6 +1,7 @@
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -Iincludes
+RM = rm -rf
 
 # Directories
 SRCS_DIR = srcs/
@@ -65,8 +66,11 @@ clean: localclean
 	@echo "Cleaned all libraries."
 
 # Clean everything including the executable
-fclean: clean
+fclean:
 	@$(RM) $(NAME)
+	@$(MAKE) fclean -s -C $(LIBFT_DIR)
+	@$(MAKE) fclean -s -C $(GNL_DIR)
+	@$(MAKE) clean -s -C $(MLX_DIR)
 	@echo "Removed executable $(NAME)."
 
 # Rebuild everything

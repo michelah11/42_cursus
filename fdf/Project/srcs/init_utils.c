@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 20:49:02 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:13:50 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:39:01 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_point	**init_coordinates(int width, int depth)
 	return (coordinates);
 }
 
-void	center_of_origin(t_map *map)
+void	center_to_origin(t_map *map)
 {
 	int	x;
 	int	y;

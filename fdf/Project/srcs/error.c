@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:01:13 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:13:12 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:53:54 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ void	error(int exit_code)
 		ft_putstr_fd("FDF closed.", 1);
 	else if (exit_code == 8)
 		ft_putstr_fd("Unable to initialize color.\n", 1);
+	exit(exit_code);
 }

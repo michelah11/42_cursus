@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 00:02:26 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:18:43 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:47:13 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	isometric(t_line *line)
 	t_point	new_end;
 
 	new_start.x = (line->start.x - line->start.y) * cos(ANG_30);
-	new_start.y = (line->start.x - line->start.y) * sin(ANG_30) - line->start.z;
+	new_start.y = (line->start.x + line->start.y) * sin(ANG_30) - line->start.z;
 	line->start.x = new_start.x;
 	line->start.y = new_start.y;
 	new_end.x = (line->end.x - line->end.y) * cos(ANG_30);
-	new_end.y = (line->end.x - line->end.y) * sin(ANG_30) - line->end.z;
+	new_end.y = (line->end.x + line->end.y) * sin(ANG_30) - line->end.z;
 	line->end.x = new_end.x;
 	line->end.y = new_end.y;
 }

@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 00:22:22 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:26:57 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:39:04 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,6 @@ t_map	*read_map(char *file_name)
 		return (NULL);
 	}
 	get_points(file_name, map);
-	center_of_origin(map);
+	center_to_origin(map);
 	return (map);
 }

@@ -1,0 +1,275 @@
+Algorithm Overview
+
+The project implements a sorting algorithm for the "Push Swap" problem using two stacks, `a` and `b`. The goal is to sort stack `a` with the minimum number of operations by
+leveraging a set of predefined commands to move elements between the two stacks.
+
+- Steps Involved
+	- Initialization
+		- Stack Setup
+			- Start with an unsorted stack `a` and an empty stack `b`. Parse the input, initialize stack `a`, and handle errors such as invalid numbers or duplicates.
+
+	- Sorting Process
+		- Small Stack Optimization
+			- For stacks with three or fewer elements, a minimal number of operations (`ra`, `rra`, `sa`) is used to sort the stack directly.
+		- Turk Sort for Larger Stacks
+			- Partial Sorting
+				- Move elements from `a` to `b`, maintaining partial order in `a`.
+			- Cost Calculation
+				- Calculate the "push price" for each element in `a` to determine the most efficient element to push to `b`.
+			- Reinsertion
+				- After `a` is sorted, reinsert elements from `b` back into `a` in the correct order.
+			- Rotations
+				- Use rotations (`ra`, `rra`) and reverse rotations (`rr`, `rrr`) to minimize the number of operations.
+
+	- Final Adjustment
+		- Minimum Element Placement
+			- Ensure the minimum element in stack `a` is at the top, finalizing the sort.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- stack_utils.c
+This file provides utility functions for managing stacks.
+
+	- stack_len(t_node *stack)
+		- Purpose: Returns the length of the stack.
+		- How it works: Iterates through the stack, counting each node until the end is reached (`NULL`).
+		- Usage: Used to determine how many elements are in the stack, which can inform decisions on sorting methods.
+
+	- stack_sorted(t_node *node)
+		- Purpose: Checks if the stack is sorted in ascending order.
+		- How it works: Iterates through the stack, comparing each node with the next. If any node is greater than the next, the stack is not sorted.
+		- Usage: Called before attempting to sort, to determine if sorting is necessary.
+
+	- find_last_node(t_node *node)
+		- Purpose: Finds the last node in the stack.
+		- How it works: Traverses to the end of the stack, returning the last node.
+		- Usage: Useful for operations that need to manipulate the last element.
+
+	- find_min(t_node *node)
+		- Purpose: Finds the node with the smallest value.
+		- How it works: Iterates through the stack, keeping track of the minimum value encountered.
+		- Usage: Often used to position the smallest element at the top of the stack during sorting.
+
+	- find_max(t_node *node)
+		- Purpose: Finds the node with the largest value.
+		- How it works: Iterates through the stack, keeping track of the maximum value encountered.
+		- Usage: Similar to `find_min`, but for finding the largest element.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- stack_init.c
+
+This file handles stack initialization and related tasks.
+
+	- stack_init(t_node **a, char **argv)
+		- Purpose: Initializes stack `a` from the command-line arguments.
+		- How it works: Iterates over the provided arguments, converting them to integers and appending them to the stack.
+		- Usage: Called in `main` to set up the initial stack.
+
+	- append_node(t_node **stack, int nbr)
+		- Purpose: Adds a new node to the end of the stack.
+		- How it works: Creates a new node with the given number and appends it to the stack's tail.
+		- Usage: Used in `stack_init` to build the stack from input.
+
+	- get_cheapest(t_node *stack)
+		- Purpose: Finds the node with the lowest "push_price".
+		- How it works: Iterates through the stack to find the node with the smallest `push_price`.
+		- Usage: Important for choosing the most efficient node to move during sorting.
+
+	- finish_rotation(t_node **stack, t_node *top_node, char stack_name)
+		- Purpose: Rotates the stack to bring the specified node to the top.
+		- How it works: Uses rotate (`ra`, `rb`) or reverse rotate (`rra`, `rrb`) based on the node’s position.
+		- Usage: Ensures the right node is at the top for further operations.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- errors.c
+
+Handles error detection and memory cleanup.
+
+	- error_syntax(char *arg)
+		- Purpose: Validates that a string can be converted to a valid integer.
+		- How it works: Checks if the string is a valid number, accounting for optional signs and digits.
+		- Usage: Used in `stack_init` to validate input arguments.
+
+	- error_duplicate(t_node *a, int nbr)
+		- Purpose: Checks for duplicate integers in the stack.
+		- How it works: Compares each node’s value against the new number to see if it already exists.
+		- Usage: Prevents duplicate entries in the stack during initialization.
+
+	- free_stack(t_node **stack)
+		- Purpose: Frees all nodes in the stack.
+		- How it works: Iterates through the stack, freeing each node.
+		- Usage: Called to clean up memory when the program exits or an error occurs.
+
+	- free_errors(t_node **a)
+		- Purpose: Frees the stack and prints an error message before exiting.
+		- How it works: Combines `free_stack` and an error message output, then terminates the program.
+		- Usage: Used when an error is detected to ensure resources are cleaned up before the program exits.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- swap_command.c
+Implements the swap operations for the stacks.
+
+	- swap(t_node **head)
+		- Purpose: Swaps the first two nodes in the stack.
+		- How it works: Adjusts the pointers to swap the top two nodes.
+		- Usage: Used by `sa`, `sb`, and `ss` to reorder the top elements.
+
+	- sa(t_node **a, bool checker)
+		- Purpose: Swaps the top two elements of stack `a`.
+		- How it works: Calls `swap` and optionally prints the operation.
+		- Usage: Invoked during sorting when the top elements of `a` need reordering.
+
+	- sb(t_node **b, bool checker)
+		- Purpose: Swaps the top two elements of stack `b`.
+		- How it works: Similar to `sa`, but operates on stack `b`.
+		- Usage: Invoked during sorting when the top elements of `b` need reordering.
+
+	- ss(t_node **a, t_node **b, bool checker)
+		- Purpose: Swaps the top two elements of both stacks simultaneously.
+		- How it works: Combines `sa` and `sb` operations.
+		- Usage: Used when both stacks need their top elements swapped at the same time.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- push_command.c
+Implements the push operations, moving elements between stacks.
+
+	- push(t_node **dest, t_node **src)
+		- Purpose: Moves the top element from the `src` stack to the `dest` stack.
+		- How it works: Adjusts the pointers to transfer the top node from `src` to `dest`.
+		- Usage: Used by `pa` and `pb` to move elements between stacks.
+
+	- pa(t_node **a, t_node **b, bool checker)
+		- Purpose: Moves the top element of stack `b` to `a`.
+		- How it works: Calls `push` and optionally prints the operation.
+		- Usage: Used during sorting to transfer elements from `b` to `a`.
+
+	- pb(t_node **b, t_node **a, bool checker)
+		- Purpose: Moves the top element of stack `a` to `b`.
+		- How it works: Calls `push` and optionally prints the operation.
+		- Usage: Used during sorting to transfer elements from `a` to `b`.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- rotate_command.c
+Implements the rotate operations, which shift stack elements.
+
+	- rotate(t_node **stack)
+		- Purpose: Shifts all elements of the stack up by one position, moving the top element to the bottom.
+		- How it works: Adjusts the pointers so that the first node becomes the last.
+		- Usage: Core function used by `ra`, `rb`, and `rr`.
+
+	- ra(t_node **a, bool checker)
+		- Purpose: Rotates stack `a`.
+		- How it works: Calls `rotate` on stack `a` and optionally prints the operation.
+		- Usage: Used during sorting when the top element needs to be moved to the bottom.
+
+	- rb(t_node **b, bool checker)
+		- Purpose: Rotates stack `b`.
+		- How it works: Similar to `ra`, but operates on stack `b`.
+		- Usage: Used during sorting when the top element needs to be moved to the bottom of `b`.
+
+	- rr(t_node **a, t_node **b, bool checker)
+		- Purpose: Rotates both stacks simultaneously.
+		- How it works: Combines `ra` and `rb` operations.
+		- Usage: Used when both stacks need their elements rotated at the same time.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- reverse_rotate_command.c
+Implements reverse rotate operations, which shift stack elements downward.
+
+	- reverse_rotate(t_node **stack)
+		- Purpose: Shifts all elements of the stack down by one position, moving the bottom element to the top.
+		- How it works: Adjusts the pointers so that the last node becomes the first.
+		- Usage: Core function used by `rra`, `rrb`, and `rrr`.
+
+	- rra(t_node **a, bool checker)
+		- Purpose: Reverse rotates stack `a`.
+		- How it works: Calls `reverse_rotate` on stack `a` and optionally prints the operation.
+		- Usage: Used during sorting when the bottom element needs to be moved to the top of `a`.
+
+	- rrb(t_node **b, bool checker)
+		- Purpose: Reverse rotates stack `b`.
+		- How it works: Similar to `rra`, but operates on stack `b`.
+		- Usage: Used during sorting when the bottom element needs to be moved to the top of `b`.
+
+	- rrr(t_node **a, t_node **b, bool checker)
+		- Purpose: Reverse rotates both stacks simultaneously.
+		- How it works: Combines `rra` and `rrb` operations.
+		- Usage: Used when both stacks need their elements reverse rotated at the same time.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- tiny_sort.c
+Handles sorting small stacks (3 elements or fewer).
+
+	- tiny_sort(t_node **a)
+		- Purpose: Sorts a stack with three or fewer elements.
+		- How it works: Uses a minimal number of operations (`ra`, `rra`, `sa`) to sort the stack.
+		- Usage: Called in `main` when the stack has three or fewer elements.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- turk_sort.c
+Implements the main sorting algorithm for larger stacks.
+
+	- turk_sort(t_node **a, t_node **b)
+		- Purpose: Sorts larger stacks using a more complex algorithm.
+		- How it works: Moves elements from `a` to `b` while keeping `a` sorted. After sorting `a`, elements from `b` are reinserted back into `a` in the correct order.
+		- Usage: Main sorting logic, called in `main` when the stack has more than three elements.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- node_a_init.c
+Prepares nodes in stack `a` for sorting.
+
+	- set_current_position(t_node *stack)
+		- Purpose: Sets the position of each node within the stack, relative to the median.
+		- How it works: Assigns positions to nodes and flags them as above or below the median.
+		- Usage: Important for determining how to move nodes during sorting.
+
+	- set_a_target_node(t_node *a, t_node *b)
+		- Purpose: Determines the target node in `b` for each node in `a`.
+		- How it works: Identifies where each node in `a` should be placed in `b` during sorting.
+		- Usage: Helps guide the sorting process by identifying efficient moves.
+
+	- set_price(t_node *a, t_node *b)
+		- Purpose: Calculates the "push price" or cost for each node.
+		- How it works: Adds up the cost of moving a node from `a` to its target position in `b`.
+		- Usage: Identifies the most efficient node to move next during sorting.
+
+	- set_cheapest(t_node *stack)
+		- Purpose: Marks the node with the lowest `push_price` as the cheapest.
+		- How it works: Scans the stack and flags the node with the lowest cost for moving.
+		- Usage: Guides the sorting process to minimize operations.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- node_b_init.c
+Prepares nodes in stack `b` for reinsertion into `a`.
+
+	- set_b_target_node(t_node *a, t_node *b)
+		- Purpose: Identifies the target node in `a` for each node in `b`.
+		- How it works: Maps each node in `b` to its correct position in `a` for reinsertion.
+		- Usage: Guides the reordering of nodes from `b` back into `a` after initial sorting.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- main.c
+
+This file contains the entry point for your program.
+
+	- main(int argc, char **argv)
+		- Purpose: Initializes the stacks, chooses the sorting method, and ensures the stack is sorted.
+		- How it works:
+			- Input Parsing: Handles command-line input and checks for errors.
+			- Stack Initialization: Initializes the stack with the provided integers.
+			- Sorting Decision: Determines the appropriate sorting method based on stack size.
+			- Cleanup: Frees resources before exiting.
+		- Usage: Central function that coordinates the entire sorting process.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

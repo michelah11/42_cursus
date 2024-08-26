@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:13:59 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/19 10:42:28 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:14:43 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ void	free_stack(t_node **stack)
 void	free_errors(t_node **a)
 {
 	free_stack(a);
-	write(1, "Error\n", 6);
+	write(2, "Error\n", 6);
 	exit(1);
 }

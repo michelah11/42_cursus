@@ -1,0 +1,315 @@
+Essential functions used:
+_________________________
+
+- access()
+	- Description
+		The `access()` function checks whether the calling program can access a specified file or directory according to
+		the specified access mode.
+	- Syntax
+		int access(const char *pathname, int mode);
+			- pathname: The path to the file or directory.
+			- mode: The accessibility check(s) to be performed. Possible values:
+			- F_OK: Check for existence of the file.
+			- R_OK: Check for read permission.
+			- W_OK: Check for write permission.
+			- X_OK: Check for execute permission.
+	- Return Value
+		- Returns `0` if the requested access is permitted.
+		- Returns `-1` if the access is denied, and `errno` is set appropriately.
+
+	- Example
+		#include <unistd.h>
+		#include <stdio.h>
+
+		int main() {
+		    if (access("readfile", R_OK) == 0)
+		        printf("readfile is accessible in reading mode\n");
+		    if (access("writefile", W_OK) == 0)
+		        printf("writefile is accessible in writing mode\n");
+		    if (access("executefile", X_OK) == 0)
+		        printf("executefile is accessible in execution mode\n");
+		    if (access("rwfile", R_OK | W_OK) == 0)
+		        printf("rwfile is accessible in writing and reading mode\n");
+
+		    return 0;
+		}
+
+	- Explanation
+		- The code checks if the program can read, write, and execute certain files.
+		- It uses bitwise OR (`|`) to combine `R_OK` and `W_OK` for checking if a file can be both read and written.
+
+______________________________________________________________________________________________________________________________________
+
+- dup2()
+	- Description
+		The `dup2()` function duplicates a file descriptor, making the new file descriptor (`newfd`) a copy of the
+		old file descriptor (`oldfd`).
+	- Syntax
+		int dup2(int oldfd, int newfd);
+			- oldfd: The original file descriptor to be duplicated.
+			- newfd: The new file descriptor that will be the copy of `oldfd`.
+	- Return Value
+		- On success, `dup2()` returns the new file descriptor.
+		- On error, it returns `-1`, and `errno` is set appropriately.
+	- Example
+		#include <unistd.h>
+		#include <fcntl.h>
+
+		int main(int ac, char *av[], char *env[]) {
+		    (void) ac;
+		    (void) av;
+		    int in;
+		    int out;
+		    char *grep_args[] = {"grep", "Lausanne", NULL};
+
+		    // Open input and output files
+		    in = open("in", O_RDONLY);
+		    out = open("out", O_WRONLY); 
+
+		    // Replace standard input with input file
+		    dup2(in, 0);
+
+		    // Close unused file descriptors
+		    close(in);
+		    close(out);
+
+		    // Execute grep
+		    execve("grep", grep_args, env);
+		}
+
+	- Explanation
+		- The program opens a file for reading and another for writing.
+		- dup2(in, 0)` replaces the standard input (`stdin`) with the file descriptor for the input file.
+		- This means subsequent commands that read from `stdin` will instead read from the input file.
+		- After the duplication, the original file descriptors are closed.
+
+______________________________________________________________________________________________________________________________________
+
+- pipe()
+	- Description
+		The `pipe()` function creates a unidirectional data channel (pipe) that can be used for interprocess
+		communication.
+	- Syntax
+		int pipe(int pipefd[2]);
+			- pipefd: An array of two integers where `pipefd[0]` refers to the read end and `pipefd[1]` refers
+			to the write end of the pipe.
+	- Return Value
+		- Returns `0` on success.
+		- Returns `-1` on error, and `errno` is set appropriately.
+	- Example
+		#include <fcntl.h>
+		#include <unistd.h>
+		#include <sys/types.h>
+		#include <sys/wait.h>
+
+		int main(int ac, char *av[], char *env[]) {
+		    (void) ac;
+		    (void) av;
+		    int pipefd[2];
+		    int pid;
+
+		    char *cat_args[] = {"/bin/cat", "infile", NULL};
+		    char *grep_args[] = {"/usr/bin/grep", "Lausanne", NULL};
+
+		    // Create a pipe
+		    pipe(pipefd);
+
+		    // Fork a child process
+		    if ((pid = fork()) == 0) {
+		        // Child process: handles "grep Lausanne"
+
+		        // Replace standard input with the read end of the pipe
+		        dup2(pipefd[0], 0);
+
+		        // Close unused write end of the pipe
+		        close(pipefd[1]);
+
+		        // Execute grep
+		        execve("/usr/bin/grep", grep_args, env);
+		    } else {
+		        // Parent process: handles "cat infile"
+
+		        // Replace standard output with the write end of the pipe
+		        dup2(pipefd[1], 1);
+
+		        // Close unused read end of the pipe
+		        close(pipefd[0]);
+
+		        // Execute cat
+		        execve("/bin/cat", cat_args, env);
+
+		        // Wait for the child process to finish
+		        waitpid(pid, NULL, 0);
+		    }
+
+		    return 0;
+		}
+
+	- Explanation
+		- The `pipe()` function creates a communication channel between processes.
+		- The parent process writes to `pipefd[1]` and the child process reads from `pipefd[0]`.
+		- dup2()` redirects `stdout` of the parent to the write end of the pipe and `stdin` of the child to the read end.
+		- execve()` is used to execute commands (`cat` and `grep`) that communicate through the pipe.
+
+______________________________________________________________________________________________________________________________________
+
+- fork()
+	- Description
+		The `fork()` function creates a new process by duplicating the calling process. The new process is referred to as
+		the child process.
+	- Syntax
+		pid_t fork(void);
+	- Return Value
+		- Returns `0` in the child process.
+		- Returns the child's process ID in the parent process.
+		- Returns `-1` on error, and `errno` is set appropriately.
+	- Example
+		#include <fcntl.h>
+		#include <unistd.h>
+		#include <sys/types.h>
+		#include <sys/wait.h>
+
+		int main(int ac, char *av[], char *env[]) {
+		    (void) ac;
+		    (void) av;
+		    int pipefd[2];
+		    int pid;
+
+		    char *cat_args[] = {"/bin/cat", "infile", NULL};
+		    char *grep_args[] = {"/usr/bin/grep", "Lausanne", NULL};
+
+		    // Create a pipe
+		    pipe(pipefd);
+
+		    // Fork a child process
+		    if ((pid = fork()) == 0) {
+		        // Child process: handles "grep Lausanne"
+
+		        // Replace standard input with the read end of the pipe
+		        dup2(pipefd[0], 0);
+
+		        // Close unused write end of the pipe
+		        close(pipefd[1]);
+
+		        // Execute grep
+		        execve("/usr/bin/grep", grep_args, env);
+		    } else {
+		        // Parent process: handles "cat infile"
+
+		        // Replace standard output with the write end of the pipe
+		        dup2(pipefd[1], 1);
+
+		        // Close unused read end of the pipe
+		        close(pipefd[0]);
+
+		        // Execute cat
+		        execve("/bin/cat", cat_args, env);
+
+		        // Wait for the child process to finish
+		        waitpid(pid, NULL, 0);
+		    }
+    			return 0;
+		}
+
+	- Explanation
+		- The `fork()` function creates a child process.
+		- The child process runs the `grep` command, and the parent process runs the `cat` command.
+		- They communicate via the pipe created before the fork.
+		- waitpid()` ensures that the parent process waits for the child to complete before proceeding.
+
+______________________________________________________________________________________________________________________________________
+
+- waitpid()
+	- Description
+		The `waitpid()` function suspends execution of the calling process until a child process specified by `pid` changes state.
+	- Syntax
+		pid_t waitpid(pid_t pid, int *status, int options);
+			- pid: The process ID of the child to wait for, or other special values.
+			- status: Pointer to an integer where the status of the child process will be stored.
+			- options: Options to modify the behavior of `waitpid()`.
+
+	- Return Value
+		- Returns the process ID of the child that changed state.
+		- Returns `-1` on error, and `errno` is set appropriately.
+	- Example
+		#include <sys/types.h>
+		#include <sys/wait.h>
+		#include <unistd.h>
+
+		int main(void) {
+		    int pid;
+		    int status;
+
+		    // Fork a child process
+		    pid = fork();
+
+		    if (pid == 0) {
+		        // Child process
+		        _exit(0); // Exit immediately
+		    } else {
+		        // Parent process: wait for the child process to terminate
+		        waitpid(pid, &status, 0);
+		    }
+
+		    return 0;
+		}
+
+	- Explanation
+		- The parent process waits for the child process to terminate using `waitpid()`.
+		- The status of the child process is stored in the `status` variable.
+		- This allows the parent process to ensure that the child process has completed before proceeding.
+
+______________________________________________________________________________________________________________________________________
+
+- execve()
+	- Description
+		The `execve()` function replaces the current process image with a new process image specified by `filename`.
+	- Syntax
+		int execve(const char *filename, char *const argv[], char *const envp[]);
+			- filename: The path to the executable file.
+			- argv[]: Array of argument strings passed to the new program.
+			- envp[]: Array of environment strings passed to the new program.
+	- Return Value
+			- On success, `execve()` does not return because the current process is replaced.
+			- On error, it returns `-1`, and `errno` is set appropriately.
+	- Example
+		#include <unistd.h>
+
+		int main(int ac, char **av, char **envp) {
+		    (void) ac;
+		    const char *filename = "/usr/bin/grep";
+		    char *const argv[] = {"/usr/bin/grep", "a", NULL};
+
+		    execve(filename, argv, envp);
+
+		    return 0;
+		}
+
+	- Explanation
+		- execve()` replaces the current process with the `grep` command.
+		- The `argv` array passes arguments to `grep`, and `envp` passes the environment.
+		- After `execve()` is called, the current process is replaced, so any code after `execve()` won’t be executed.
+
+______________________________________________________________________________________________________________________________________
+
+- unlink()
+	- Description
+		The `unlink()` function deletes a name from the filesystem. If it was the last link to a file, the file is deleted.
+	- Syntax
+		int unlink(const char *pathname);
+			- pathname: The path to the file to be deleted.
+	- Return Value
+		- Returns `0` on success.
+		- Returns `-1` on error, and `errno` is set appropriately.
+	- Example
+		#include <unistd.h>
+
+		int main(void) {
+		    if (access("tmp", F_OK) == 0)
+		        unlink("tmp");
+		    return 0;
+		}
+
+	- Explanation
+		- The program first checks if the file `tmp` exists using `access()`.
+		- If the file exists, it is deleted using `unlink()`.

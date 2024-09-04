@@ -1,0 +1,47 @@
+File: colors.h
+This header file defines several color constants used throughout the fdf program.
+
+The color definitions in the colors.h file use hexadecimal notation to represent RGB (Red, Green, Blue) color values.
+This format is widely used in many programming environments, including web development (e.g., HTML/CSS), graphics programming, and GUI design.
+
+Where Did This Representation Come From?
+The RGB color model is a standard way to represent colors in digital systems. It is based on the principle that any color can be created
+by combining three primary colors: Red, Green, and Blue. Each of these primary colors is represented by an 8-bit value, allowing for
+256 different intensities (0-255) per color channel.
+
+Hexadecimal Notation: In programming, colors are often represented in hexadecimal (base 16) notation. A color in RGB is typically represented
+as a 6-digit hexadecimal number, where:
+The first two digits represent the intensity of Red (RR).
+The next two digits represent the intensity of Green (GG).
+The last two digits represent the intensity of Blue (BB).
+	For example:
+	0xffffff represents white (FF red, FF green, FF blue).
+	0x000000 represents black (00 red, 00 green, 00 blue).
+
+How It Is Used in the fdf Program
+In the fdf program, these color constants are used to set the color of points, lines, and other graphical elements.
+The colors are typically passed as arguments to drawing functions or are used to initialize color structures that handle gradients and transitions.
+
+
+Setting a Pixel Color: When drawing a pixel or a line, the program will use one of these color constants to specify the color.
+
+	pixel_to_image(image, x, y, C_RED);  // Draws a red pixel at coordinates (x, y)
+
+Gradients: When creating color gradients, the program might interpolate between two colors, such as C_WHITE and C_BLUEY,
+to create a smooth transition between them.
+
+Color Definitions:
+
+- Basic Colors:
+# define C_WHITE 0xffffff	// White color
+# define C_GREY 0x303030	// Grey color
+# define C_RED 0xff0000		// Red color
+# define C_GREEN 0x00ff00	// Green color
+# define C_BLUE 0x0000ff	// Blue color
+# define C_YELLOW 0xffff00	// Yellow color
+# define C_CYAN 0x00ffff	// Cyan color
+# define C_PINK 0xff00ff	// Pink color
+
+- Custom Colors:
+# define C_ORANGY 0xffa500	// Orangy color (used for color gradients)
+# define C_BLUEY 0x0492c2	// Bluey color (used for color gradients)

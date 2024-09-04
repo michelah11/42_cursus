@@ -1,0 +1,32 @@
+File: error.c
+This file contains a function for handling errors and terminating the program with appropriate messages.
+
+Functions:
+
+1. error(int exit_code):
+	- Purpose: Displays an error message corresponding to the given exit code and terminates the program.
+	- Parameters:
+	- int exit_code: The exit code indicating the type of error.
+	- Code Documentation:
+
+	void error(int exit_code) {
+		if (exit_code == 0)
+			ft_putstr_fd("FDF closed.\n", 1);	// General close message
+		else if (exit_code == 1)
+			ft_putstr_fd("Error. Usage: ./fdf <file path\n>", 1);	// Incorrect usage error
+		else if (exit_code == 2)
+			ft_putstr_fd("Cannot read file.\n", 1);	// File reading error
+		else if (exit_code == 3)
+			ft_putstr_fd("Cannot Initialize fdf.\n", 1);	// Initialization error
+		else if (exit_code == 4)
+			ft_putstr_fd("Cannot parse map.\n", 1);	// Map parsing error
+		else if (exit_code == 5)
+			ft_putstr_fd("Cannot create image.\n", 1);	// Image creation error
+		else if (exit_code == 6)
+			ft_putstr_fd("Cannot initialize camera.\n", 1);	// Camera initialization error
+		else if (exit_code == 7)
+			ft_putstr_fd("FDF closed.", 1);	// General close message
+		else if (exit_code == 8)
+			ft_putstr_fd("Unable to initialize color.\n", 1);	// Color initialization error
+		exit(exit_code);	// Terminate the program with the given exit code
+	}

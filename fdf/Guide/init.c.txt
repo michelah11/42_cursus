@@ -1,0 +1,155 @@
+File: init.c
+This file contains functions for initializing various components of the program, including the main fdf structure, map, image,
+and camera.
+
+Functions:
+
+1. init_fdf(char *file_name):
+	- Purpose: Initializes the main fdf structure with the necessary components to run the programwhich includes the map, image,
+		window, and camera.
+		- Memory Allocation: The fdf structure is allocated memory using malloc(). If this allocation fails, the program exits
+			with an error.
+		- Map Reading: The map data is read from a file using read_map(). If map reading fails, the allocated memory is freed,
+			and the program exits.
+		- MLX Initialization: The MiniLibX (MLX) library is initialized using mlx_init(), which creates a graphical interface.
+		- Window Creation: A new window is created with the specified width, height, and name using mlx_new_window().
+		- Image Initialization: The init_image() function sets up the structure for rendering.
+		- Camera Initialization: The camera (viewing system) is initialized with the map data via init_cam().
+	- Parameters:
+		- char *file_name: The name of the file containing the map data.
+	- Returns: A pointer to the initialized fdf structure, or exits the program on failure.
+	- Code Documentation:
+
+	t_fdf *init_fdf(char *file_name) {
+		t_fdf *fdf;
+
+		fdf = malloc(sizeof(t_fdf));	// Allocate memory for the main fdf structure
+		if (!fdf)
+			error(3);	// Handle error if memory allocation fails
+		fdf->map = read_map(file_name);	// Read the map from the file
+		if (!fdf->map)
+		{
+			free(fdf);	// Free the fdf structure if map reading fails
+			error(4);	// Handle map reading error
+		}
+		fdf->mlx = mlx_init();	// Initialize the MLX library
+		fdf->win_x = WINDOW_WIDTH;
+		fdf->win_y = WINDOW_HEIGHT;
+		fdf->win = mlx_new_window(fdf->mlx, fdf->win_x, fdf->win_y, WINDOW_NAME);	// Create a new window
+		fdf->image = init_image(fdf->mlx);	// Initialize the image structure
+		if (!fdf->image)
+			close_map(fdf, 5);	// Handle error if image initialization fails
+		fdf->cam = init_cam(fdf->map);	// Initialize the camera structure
+		if (!fdf->cam)
+			close_all(fdf, 6);	// Handle error if camera initialization fails
+		return (fdf);	// Return the initialized fdf structure
+	}
+
+2. init_map(void):
+	- Purpose: Initializes an empty map structure  that holds information about the 3D map, such as its size and the coordinates
+		of its points.
+		- Memory Allocation: Memory is allocated for the t_map structure.
+		- Initialization: The fields for coordinates, max_x, max_y, max_z, and min_z are initialized to default values.
+	- Returns: A pointer to the initialized map structure, or NULL on failure.
+	- Code Documentation:
+
+	t_map *init_map(void)
+	{
+		t_map *map;
+
+		map = malloc(sizeof(t_map));	// Allocate memory for the map structure
+		if (!map)
+			return (NULL);	// Return NULL if allocation fails
+		map->coordinates = NULL;	// Initialize the coordinates to NULL
+		map->max_x = 0;
+		map->max_y = 0;
+		map->max_z = 0;
+		map->min_z = 0;
+
+		return (map);	// Return the initialized map structure
+	}
+
+3. init_image(void *mlx):
+	- Purpose: Initializes an image structure for drawing.
+		- Memory Allocation: Memory is allocated for the t_map structure.
+		- Initialization: The fields for coordinates, max_x, max_y, max_z, and min_z are initialized to default values.
+	- Parameters:
+	- void *mlx: The MLX instance.
+	- Returns: A pointer to the initialized image structure, or NULL on failure.
+	- Code Documentation:
+
+	t_image *init_image(void *mlx)
+	{
+		t_image *image;
+
+		image = malloc(sizeof(t_image));	// Allocate memory for the image structure
+		if (!image)
+			return (NULL);	// Return NULL if allocation fails
+		image->image = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);	// Create a new image
+		image->buffer = mlx_get_data_addr(image->image, &image->pixel_bits,
+										&image->line_bytes, &image->endian);	// Get the buffer address and other image properties
+		image->line = NULL;	// Initialize the line pointer to NULL
+		return (image);	// Return the initialized image structure
+	}
+
+4. init_cam(t_map *map):
+	- Purpose: Initializes a cam (camera) structure for viewing the 3D map.
+		- Memory Allocation: Memory is allocated for the t_cam structure.
+		- Projection and Scale: The default projection is set to ISOMETRIC, and the scale factor is calculated to fit the map within the window size.
+		- Centering: The camera's position (move_x, move_y) is centered on the window.
+		- Rotation Angles: The camera's rotation angles (alpha, beta, gamma) are initialized to zero.
+	- Parameters:
+	- t_map *map: The map structure containing the 3D data.
+	- Returns: A pointer to the initialized cam structure, or NULL on failure.
+	- Code Documentation:
+
+	t_cam *init_cam(t_map *map) {
+		t_cam *cam;
+
+		cam = malloc(sizeof(t_cam));	// Allocate memory for the cam structure
+		if (!cam)
+			return (NULL);	// Return NULL if allocation fails
+		cam->projection = ISOMETRIC;	// Set the default projection to isometric
+		cam->color_pallet = FALSE;	// Disable color pallet by default
+		cam->scale_factor = scale_to_fit(map);	// Calculate the scale factor to fit the map
+		cam->scale_z = 1;
+		cam->move_x = WINDOW_WIDTH / 2;	// Center the camera horizontally
+		cam->move_y = WINDOW_HEIGHT / 2;	// Center the camera vertically
+		cam->alpha = 0;	// Initialize rotation angles
+		cam->beta = 0;
+		cam->gamma = 0;
+		return (cam);	// Return the initialized cam structure
+	}
+
+5. init_line(t_point start, t_point end, t_fdf *fdf):
+	- Purpose: Initializes a line structure for drawing between two points.
+		- Memory Allocation: Memory is allocated for the t_line structure.
+		- Point Initialization: The starting and ending points (start and end) are initialized with their coordinates and color.
+		- Z-Transformation: The transform_z value is calculated based on the dimensions of the map, allowing for proper perspective
+			adjustments during rendering.
+	- Parameters:
+	- t_point start: The starting point of the line.
+	- t_point end: The ending point of the line.
+	- t_fdf *fdf: The main structure containing map and rendering information.
+	- Returns: A pointer to the initialized line structure, or NULL on failure.
+	- Code Documentation:
+
+	t_line *init_line(t_point start, t_point end, t_fdf *fdf)
+	{
+		t_line *line;
+
+		line = malloc(sizeof(t_line));	// Allocate memory for the line structure
+		if (!line)
+			return (NULL);	// Return NULL if allocation fails
+		line->start.x = start.x;	// Initialize start point coordinates and color
+		line->start.y = start.y;
+		line->start.z = start.z;
+		line->start.color = start.color;
+		line->end.x = end.x;	// Initialize end point coordinates and color
+		line->end.y = end.y;
+		line->end.z = end.z;
+		line->end.color = end.color;
+		line->transform_z = max((fdf->map->max_z - fdf->map->min_z),
+								max(fdf->map->max_x, fdf->map->max_y));	// Calculate the z-transform factor
+		return (line);	// Return the initialized line structure
+	}

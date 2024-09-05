@@ -43,5 +43,5 @@ Color Definitions:
 # define C_PINK 0xff00ff	// Pink color
 
 - Custom Colors:
-# define C_ORANGY 0xffa500	// Orangy color (used for color gradients)
+# define C_ORANGE 0xffa500	// Orangy color (used for color gradients)
 # define C_BLUEY 0x0492c2	// Bluey color (used for color gradients)

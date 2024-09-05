@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:22:34 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/05 04:11:15 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:44:08 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,20 @@ static void	put_colors(t_fdf *fdf, t_point *point)
 	}
 	else
 	{
-		if (point->z > 4)
-			colored_line(fdf, point, C_ORANGY, C_RED);
-		else if (point->z >= 2 && point->z < 4)
-			colored_line(fdf, point, C_YELLOW, C_ORANGY);
-		else if (point->z >= 0 && point->z < 2)
+		if (point->z >= 7)
+			colored_line(fdf, point, C_ORANGE, C_RED);
+		else if (point->z >= 3.5 && point->z < 7)
+			colored_line(fdf, point, C_YELLOW, C_ORANGE);
+		else if (point->z > 0.1 && point->z < 3.5)
 			colored_line(fdf, point, C_GREEN, C_YELLOW);
-		else if (point->z >= -2 && point->z < 0)
+		else if (point->z >= -0.1 && point->z <= 0.1)
+			colored_line(fdf, point, LINE_DEFAULT, LINE_DEFAULT);
+		else if (point->z >= -3.5 && point->z < 0.1)
 			colored_line(fdf, point, C_CYAN, C_GREEN);
-		else if (point->z >= -4 && point->z < -2)
-			colored_line(fdf, point, C_BLUEY, C_CYAN);
-		else
-			colored_line(fdf, point, C_BLUE, C_BLUEY);
+		else if (point->z >= -7 && point->z < -3.5)
+			colored_line(fdf, point, C_BLUE, C_CYAN);
+		else if (point->z < -7)
+			colored_line(fdf, point, C_PINK, C_BLUE);
 	}
 }
 

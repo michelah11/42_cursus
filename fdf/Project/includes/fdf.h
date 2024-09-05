@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 00:43:50 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/05 04:11:37 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:47:48 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 enum e_projection
 {
 	ISOMETRIC,
+	FRONT,
+	SIDE,
 	PERSPECTIVE,
 	TOP
 };
@@ -160,5 +162,6 @@ int		ft_atoi_base(char *str, char *base);
 size_t	split_count(const char *s, char c);
 void	bresenham(t_fdf *fdf, t_point start, t_point end);
 void	pixels_to_image(t_image *image, float x, float y, int color);
+void	reset_angle(t_fdf *fdf);
 
 #endif

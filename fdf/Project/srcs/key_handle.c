@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 23:41:47 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/05 03:22:00 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/06 02:19:20 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,15 @@ static void	key_rotate(int keycode, t_fdf *fdf)
 
 static void	key_project(int keycode, t_fdf *fdf)
 {
+	reset_angle(fdf);
 	if (keycode == KEY_P)
 		fdf->cam->projection = PERSPECTIVE;
 	else if (keycode == KEY_I)
 		fdf->cam->projection = ISOMETRIC;
+	else if (keycode == KEY_L)
+		fdf->cam->projection = FRONT;
+	else if (keycode == KEY_K)
+		fdf->cam->projection = SIDE;
 	else if (keycode == KEY_O)
 		fdf->cam->projection = TOP;
 }
@@ -75,7 +80,8 @@ int	key_handle(int keycode, t_fdf *fdf)
 	else if (keycode == KEY_A || keycode == KEY_S || keycode == KEY_D
 		|| keycode == KEY_Q || keycode == KEY_W || keycode == KEY_E)
 		key_rotate(keycode, fdf);
-	else if (keycode == KEY_P || keycode == KEY_I || keycode == KEY_O)
+	else if (keycode == KEY_P || keycode == KEY_I || keycode == KEY_O
+		|| keycode == KEY_L || keycode == KEY_K)
 		key_project(keycode, fdf);
 	else if (keycode == KEY_SPACE)
 	{

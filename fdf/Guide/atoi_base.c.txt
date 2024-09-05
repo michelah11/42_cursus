@@ -1,3 +1,4 @@
+
 File: atoi_base.c
 This file contains functions for handling base conversions, specifically converting strings into integers based on a given base.
 
@@ -13,30 +14,29 @@ Functions:
 	int check_base(char *base)
 	{
 		char	*str;
-		int		n;	// Counter for base length
-		int		i;	// Index for iterating over the base string
-		int		j;	// Inner index for checking duplicates
+		int		n; // Counter for base length
+		int		i; // Index for iterating over the base string
+		int		j; // Inner index for checking duplicates
 
 		n = 0;
 		i = 0;
 		j = 0;
-		str = base;	// Initialize str to point to the base string
-
-		while (base[i] != '\0')	// Iterate over the base string
+		str = base; // Initialize str to point to the base string
+		while (base[i] != '\0') // Iterate over the base string
 		{
-			j = i + 1;	// Start j from the next character
-			if (base[i] == 43 || base[i] == 45 || base[i] == 32)	// Check for invalid characters in the base
+			j = i + 1; // Start j from the next character
+			if (base[i] == 43 || base[i] == 45 || base[i] == 32) // Check for invalid characters in the base
 				return (0);
-			while (str[j] != '\0')	// Check for duplicate characters
+			while (str[j] != '\0') // Check for duplicate characters
 			{
 				if (str[j] == base[i])
 					return (0);
 				j++;
 			}
-			n++;	// Increment the length of the base
+			n++; // Increment the length of the base
 			i++;
 		}
-		return (n);	// Return the length of the valid base
+		return (n); // Return the length of the valid base
 	}
 
 2. get_index(char c, char *str):
@@ -50,15 +50,15 @@ Functions:
 	int get_index(char c, char *str) {
 		int	index;
 
-		index = 0;	// Initialize the index
-		while (*str)	// Iterate over the string
+		index = 0; // Initialize the index
+		while (*str) // Iterate over the string
 		{
 			if (c == *str)
-				return (index);	// Return the index if the character is found
+				return (index); // Return the index if the character is found
 			str++;
 			index++;
 		}
-		return (-1);	// Return -1 if the character is not found
+		return (-1); // Return -1 if the character is not found
 	}
 
 3. char_in(char c, char *str):
@@ -70,13 +70,13 @@ Functions:
 	- Code Documentation:
 
 	int char_in(char c, char *str) {
-		while (*str)	// Iterate over the string
+		while (*str) // Iterate over the string
 		{
 			if (c == *str)
-				return (1);	// Return 1 if the character is found
+				return (1); // Return 1 if the character is found
 			str++;
 		}
-		return (0);	// Return 0 if the character is not found
+		return (0); // Return 0 if the character is not found
 	}
 
 
@@ -91,26 +91,26 @@ Functions:
 	int ft_atoi_base(char *str, char *base)
 	{
 		int	sign;
-		int	number;	// The number to be constructed
+		int	number; // The number to be constructed
 		int	n;
 
-		sign = 1;	// Initialize the sign as positive
+		sign = 1; // Initialize the sign as positive
 		number = 0;
-		n = check_base(base);	// Validate the base and get its length
+		n = check_base(base); // Validate the base and get its length
 		if (n < 2)
-			return (0);	// Return 0 if the base is invalid
-		while (*str == 32 || (*str >= 9 && *str <= 13))	// Skip whitespace characters
+			return (0); // Return 0 if the base is invalid
+		while (*str == 32 || (*str >= 9 && *str <= 13)) // Skip whitespace characters
 			str++;
-		while (*str == '-' || *str == '+')	// Handle the sign if present
+		while (*str == '-' || *str == '+') // Handle the sign if present
 		{
 			if (*str == '-')
-				sign *= -1;	// Toggle the sign if a '-' is found
+				sign *= -1; // Toggle the sign if a '-' is found
 			str++;
 		}
-		while (*str && char_in(*str, base))	// Construct the number using the base
+		while (*str && char_in(*str, base)) // Construct the number using the base
 		{
 			number = number * n + get_index(*str, base);
 			str++;
 		}
-		return (sign * number);	// Return the signed number
+		return (sign * number); // Return the signed number
 	}

@@ -1,0 +1,165 @@
+
+File: read.c
+
+This file contains functions for reading the map data from a file and storing it in a structured format. It handles parsing the file, filling the map's coordinates, and checking the validity of the map.
+
+Functions:
+
+1. get_width(char *file_name):
+	- Purpose: Calculates the width (number of columns) of the map by reading the first line of the file and counting the elements.
+	- Parameters:
+		- char *file_name: The name of the file containing the map data.
+	- Returns: The width of the map, or 0 if there is an inconsistency in the number of elements per line.
+	- Code Documentation:
+
+	static int get_width(char *file_name) {
+		int fd;
+		char *line;
+		int width, new_width;
+
+		fd = open(file_name, O_RDONLY, 0);	// Open the file for reading
+		line = get_next_line(fd);	// Read the first line
+		if (!line)
+			return (0);	// Return 0 if the file is empty
+		width = (int)split_count(line, ' ');	// Calculate the width by counting the elements
+		free(line);
+		while (1) // Iterate through the remaining lines to check for consistency in width
+        {
+			line = get_next_line(fd);
+			if (line == NULL)
+				break;
+			new_width = (int)split_count(line, ' ');
+			if (width != new_width)
+				return (0);	// Return 0 if there is an inconsistency in width
+			free(line);
+		}
+		close(fd);	// Close the file
+		return (width);	// Return the calculated width
+	}
+
+2. get_depth(char *file_name):
+	- Purpose: Calculates the depth (number of rows) of the map by counting the lines in the file.
+	- Parameters:
+		- char *file_name: The name of the file containing the map data.
+	- Returns: The depth of the map.
+	- Code Documentation:
+
+	static int get_depth(char *file_name) {
+		int fd, depth;
+		char *line;
+
+		fd = open(file_name, O_RDONLY, 0);	// Open the file for reading
+		depth = 0;
+		while (1) // Iterate through each line of the file and count non-empty lines
+        {
+			line = get_next_line(fd);
+			if (line == NULL)
+				break;
+			if (*line >= 32 && *line <= 126)
+				depth++;	// Increment depth for valid lines
+			free(line);
+		}
+		close(fd);	// Close the file
+		return (depth);	// Return the calculated depth
+	}
+
+3. fill_point(char *point, t_map *map, int coord_x, int coord_y):
+	- Purpose: Parses a string representing a point and fills the corresponding coordinate in the map structure.
+	- Parameters:
+		- char *point: The string representing the point, possibly including a height and color.
+		- t_map *map: The map structure where the point will be stored.
+		- int coord_x: The x-coordinate in the map.
+		- int coord_y: The y-coordinate in the map.
+	- Code Documentation:
+
+	static void fill_point(char *point, t_map *map, int coord_x, int coord_y) {
+		char **info;
+		int i;
+
+		map->coordinates[coord_x][coord_y].x = (float)coord_x;	// Set the x-coordinate
+		map->coordinates[coord_x][coord_y].y = (float)coord_y;	// Set the y-coordinate
+		// Check if the point includes color information
+		if (ft_strchr(point, ',')) {
+			info = ft_split(point, ',');	// Split the point into height and color
+			map->coordinates[coord_x][coord_y].z = (float)ft_atoi(info[0]);	// Set the height (z-coordinate)
+			map->coordinates[coord_x][coord_y].color = ft_atoi_base(info[1], HEXADECIMAL_L_BASE);	// Set the color
+			i = 0;
+			while (info[i])
+				free(info[i++]);	// Free the split strings
+			free(info);
+		}
+        else
+        {
+			map->coordinates[coord_x][coord_y].z = (float)ft_atoi(point);	// Set the height if no color is provided
+			map->coordinates[coord_x][coord_y].color = -1;	// Set default color
+		}
+		// Update the map's max and min height (z-coordinate)
+		if (map->coordinates[coord_x][coord_y].z > map->max_z)
+			map->max_z = map->coordinates[coord_x][coord_y].z;
+		if (map->coordinates[coord_x][coord_y].z < map->min_z)
+			map->min_z = map->coordinates[coord_x][coord_y].z;
+	}
+
+4. get_points(char *file_name, t_map *map):
+	- Purpose: Reads the points from the file and fills the map structure with the parsed data.
+	- Parameters:
+		- char *file_name: The name of the file containing the map data.
+		- t_map *map: The map structure to be filled with the parsed points.
+	- Code Documentation:
+
+	static void get_points(char *file_name, t_map *map) {
+		int fd;
+		char *line, **split;
+		int coord[2];
+
+		fd = open(file_name, O_RDONLY, 0);	// Open the file for reading
+		coord[1] = 0;	// Initialize the y-coordinate
+		// Iterate through each line of the file
+		while (1) {
+			line = get_next_line(fd);
+			if (line == NULL)
+				break;
+			split = ft_split(line, ' ');	// Split the line into individual points
+			coord[0] = 0;	// Initialize the x-coordinate
+			// Fill each point in the map's coordinates
+			while (coord[0] < map->max_x) {
+				fill_point(split[coord[0]], map, coord[0], coord[1]);
+				free(split[coord[0]]);
+				coord[0]++;
+			}
+			free(split);
+			free(line);
+			coord[1]++;	// Increment the y-coordinate
+		}
+		close(fd);	// Close the file
+	}
+
+5. read_map(char *file_name):
+	- Purpose: Reads the map data from a file and returns a fully populated map structure.
+	- Parameters:
+		- char *file_name: The name of the file containing the map data.
+	- Returns: A pointer to the populated map structure, or NULL on failure.
+	- Code Documentation:
+
+	t_map *read_map(char *file_name) {
+		t_map *map;
+		int fd;
+
+		fd = open(file_name, O_RDONLY, 0);	// Open the file for reading
+		if (fd < 0)
+			error_by_code(2);	// Handle file reading error
+		close(fd);	// Close the file
+		map = init_map();	// Initialize the map structure
+		if (!map)
+			return (NULL);	// Return NULL if initialization fails
+		map->max_x = get_width(file_name);	// Get the width of the map
+		map->max_y = get_depth(file_name);	// Get the depth of the map
+		map->coordinates = init_coordinates(map->max_x, map->max_y);	// Allocate memory for the coordinates
+		if (!map->coordinates) {
+			free(map);	// Free the map structure if memory allocation fails
+			return (NULL);	// Return NULL on failure
+		}
+		get_points(file_name, map);	// Fill the map with the points from the file
+		center_to_origin(map);	// Center the coordinates around the origin
+		return (map);	// Return the populated map structure
+	}

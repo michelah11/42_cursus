@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 16:38:36 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 19:08:30 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:19:27 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,14 @@
 # define KEY_O 111
 # define KEY_L 108
 # define KEY_R 114
-# define KEY_A 197
+# define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
 # define KEY_Q 113
 # define KEY_W 119
 # define KEY_E 101
+# define KEY_K 107
+# define KEY_L 108
 # define KEY_ESC 65307
 
 #endif

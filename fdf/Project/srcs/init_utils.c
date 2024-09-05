@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 20:49:02 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/05 03:17:11 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:47:30 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,13 @@ float	scale_to_fit(t_map *map)
 	if (scale_factor < 4)
 		return (2);
 	return (scale_factor / 2);
+}
+
+void	reset_angle(t_fdf *fdf)
+{
+	fdf->cam->alpha = 0;
+	fdf->cam->beta = 0;
+	fdf->cam->gamma = 0;
 }
 
 void	reset(t_fdf *fdf)

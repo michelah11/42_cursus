@@ -26,13 +26,13 @@ Functions:
         line->end.y = new_end.y;
     }
 
-2. perspective_x(t_line *line):
+2. perspective(t_line *line):
     - Purpose: Applies perspective projection to a line.
     - Parameters:
     - t_line *line: The line structure containing the start and end points to project.
     - Code Documentation:
 
-    static void perspective_x(t_line *line) {
+    static void perspective(t_line *line) {
         t_point new_start, new_end;
         double z;
 
@@ -66,7 +66,7 @@ Functions:
         if (cam->projection == ISOMETRIC)
             isometric(line);    // Apply isometric projection
         else if (cam->projection == PERSPECTIVE)
-            perspective_x(line);    // Apply perspective projection
+            perspective_line);    // Apply perspective projection
         else if (cam->projection == TOP)
             return;    // Top view projection does not modify the line
     }

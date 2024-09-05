@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 16:48:30 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/23 19:12:58 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:07:29 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@
 # define C_CYAN 0x00ffff
 # define C_PINK 0xff00ff
 # define C_ORANGY 0xffa500
-# define C_BLUEY 0x0492c2
+# define C_BLUEY 0x0002c2
 
 #endif

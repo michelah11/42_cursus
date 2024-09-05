@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 23:41:47 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 19:08:50 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:22:00 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ static void	key_scale(int keycode, t_fdf *fdf)
 static void	key_rotate(int keycode, t_fdf *fdf)
 {
 	if (keycode == KEY_S)
-		fdf->cam->alpha -= (5 * ANG_1);
+		fdf->cam->alpha -= (5 * ANG_D_1);
 	else if (keycode == KEY_W)
-		fdf->cam->alpha += (5 * ANG_1);
+		fdf->cam->alpha += (5 * ANG_D_1);
 	else if (keycode == KEY_A)
-		fdf->cam->gamma -= (5 * ANG_1);
+		fdf->cam->gamma -= (5 * ANG_D_1);
 	else if (keycode == KEY_D)
-		fdf->cam->gamma += (5 * ANG_1);
+		fdf->cam->gamma += (5 * ANG_D_1);
 	else if (keycode == KEY_Q)
-		fdf->cam->beta -= (5 * ANG_1);
+		fdf->cam->beta -= (5 * ANG_D_1);
 	else if (keycode == KEY_E)
-		fdf->cam->beta += (5 * ANG_1);
+		fdf->cam->beta += (5 * ANG_D_1);
 }
 
 static void	key_project(int keycode, t_fdf *fdf)

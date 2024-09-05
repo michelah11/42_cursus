@@ -1,9 +1,9 @@
-File: ft_split_count.c
+File: split_count.c
 This file contains a utility function to count the number of substrings in a string based on a delimiter.
 
 Functions:
 
-1. ft_split_count(const char *s, char c):
+1. split_count(const char *s, char c):
 	- Purpose: Counts the number of substrings in the string s that are separated by the delimiter c.
 	- Parameters:
 	- const char *s: The input string.
@@ -11,7 +11,7 @@ Functions:
 	- Returns: The number of substrings found.
 	- Code Documentation:
 
-	size_t ft_split_count(const char *s, char c) {
+	size_t split_count(const char *s, char c) {
 		size_t i = 0;	 // Index for iterating over the string
 		size_t prev = i;	// Previous index of a substring start
 		size_t next = i;	// Next index of a delimiter

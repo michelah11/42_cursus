@@ -29,9 +29,9 @@ Macro Definitions:
 
 - Conversion Bases & Useful Angles:
 # define HEXADECIMAL_L_BASE		"0123456789abcdef"	// Hexadecimal base for conversions
-# define ANG_1					0.01745329	// 1 degree in radians
-# define ANG_30					0.52359877	// 30 degrees in radians
-# define ANG_45					0.78539816	// 45 degrees in radians
+# define ANG_D_1				0.01745329	// 1 degree in radians
+# define ANG_D_30					0.52359877	// 30 degrees in radians
+# define ANG_D_45					0.78539816	// 45 degrees in radians
 
 Enumerations:
 
@@ -172,8 +172,8 @@ typedef struct s_fdf
 Function Prototypes:
 
 - Mathematical Utilities:
-float min(float a, float b);			// Returns the minimum of two floats
-float max(float a, float b);			// Returns the maximum of two floats
+float get_min(float a, float b);			// Returns the minimum of two floats
+float get_max(float a, float b);			// Returns the maximum of two floats
 float absolute(float n);				// Returns the absolute value of a float
 
 
@@ -207,12 +207,12 @@ t_point	init_coordinates(int width, int depth);						// Initializes the map's co
 
 
 - Error Handling:
-void error(int exit_code);				// Handles errors and exits the program with a message
+void error_by_code(int exit_code);				// Handles errors and exits the program with a message
 
 
 - Drawing Utilities:
 void bresenham(t_fdf *fdf, t_point start, t_point end);  // Draws a line using the Bresenham algorithm
-void pixel_to_image(t_image *image, float x, float y, int color); // Draws a pixel to the image buffer
+void pixels_to_image(t_image *image, float x, float y, int color); // Draws a pixel to the image buffer
 void clear_image(t_image *image, int image_size); // Clears the image buffer
 
 
@@ -229,7 +229,7 @@ void close_map(t_fdf *fdf, int exit_code);	// Closes the map and associated reso
 
 - String and File Utilities:
 int ft_atoi_base(char *str, char *base);		// Converts a string to an integer based on a given base
-size_t ft_split_count(const char *s, char c);	// Counts the number of splits in a string based on a delimiter
+size_t split_count(const char *s, char c);	// Counts the number of splits in a string based on a delimiter
 
 
 
@@ -274,7 +274,7 @@ Functions:
 		mlx_destroy_display(fdf->mlx);	// Destroy the display
 		free(fdf->mlx);	// Free the MLX instance
 		free(fdf);	// Free the main fdf structure
-		error(exit_code);	// Call the error handler with the exit code
+		error_by_code(exit_code);	// Call the error handler with the exit code
 	}
 
 
@@ -291,7 +291,7 @@ Functions:
 		mlx_destroy_window(fdf->mlx, fdf->win);	// Destroy the window
 		mlx_destroy_display(fdf->mlx);	// Destroy the display
 		free(fdf);	// Free the main fdf structure
-		error(exit_code);	// Call the error handler with the exit code
+		error_by_code(exit_code);	// Call the error handler with the exit code
 	}
 
 
@@ -437,7 +437,7 @@ Functions:
 
 		x_step = end.x - start.x;	// Calculate the difference in x
 		y_step = end.y - start.y;	// Calculate the difference in y
-		max_steps = (int)max(absolute(x_step), absolute(y_step));	// Determine the number of steps based on the greater difference
+		max_steps = (int)get_max(absolute(x_step), absolute(y_step));	// Determine the number of steps based on the greater difference
 
 		x_step /= max_steps;	// Normalize the x_step
 		y_step /= max_steps;	// Normalize the y_step
@@ -450,7 +450,7 @@ Functions:
 		while (i_line < max_steps) {
 			start.color = get_color(color, i_line++, max_steps);	// Get the current color based on progress
 			if (start.x > 0 && start.y > 0 && start.x < WINDOW_WIDTH && start.y < WINDOW_HEIGHT)
-				pixel_to_image(fdf->image, start.x, start.y, start.color);	// Draw the pixel in the image buffer
+				pixels_to_image(fdf->image, start.x, start.y, start.color);	// Draw the pixel in the image buffer
 
 			start.x += x_step;	// Increment x position
 			start.y += y_step;	// Increment y position
@@ -459,7 +459,7 @@ Functions:
 	}
 
 
-2. pixel_to_image(t_image *image, float x, float y, int color):
+2. pixels_to_image(t_image *image, float x, float y, int color):
 	- Purpose: Draws a pixel in the image buffer at the specified coordinates.
 	- Parameters:
 	- t_image *image: The image structure containing the buffer.
@@ -468,7 +468,7 @@ Functions:
 	- int color: The color of the pixel.
 	- Code Documentation:
 
-	void pixel_to_image(t_image *image, float x, float y, int color) {
+	void pixels_to_image(t_image *image, float x, float y, int color) {
 		int pixel;
 
 		pixel = ((int)y * image->line_bytes) + ((int)x * 4);	// Calculate the pixel's position in the buffer
@@ -508,7 +508,7 @@ Functions:
 		while (y < WINDOW_HEIGHT) {
 			x = 0;
 			while (x < WINDOW_WIDTH) {
-				pixel_to_image(image, x, y, BACKGROUND_DEFAULT);	// Set each pixel to the background color
+				pixels_to_image(image, x, y, BACKGROUND_DEFAULT);	// Set each pixel to the background color
 				x++;
 			}
 			y++;
@@ -520,14 +520,14 @@ This file contains the entry point (main function) of the program and sets up th
 
 Functions:
 
-1. expose_handle(t_fdf *fdf):
+1. key_press_handle(t_fdf *fdf):
 	- Purpose: Handles the expose event (when the window needs to be redrawn).
 	- Parameters:
 	- t_fdf *fdf: The main structure containing rendering information.
 	- Returns: 0 after handling the event.
 	- Code Documentation:
 
-	static int expose_handle(t_fdf *fdf) {
+	static int key_press_handle(t_fdf *fdf) {
 		render(fdf);	// Re-render the scene when the window is exposed
 		return (0);	// Return 0 to indicate successful handling
 	}
@@ -546,7 +546,7 @@ Functions:
 		t_fdf *fdf;
 
 		if (argc != 2)
-			error(1);	// Check for correct number of arguments
+			error_by_code(1);	// Check for correct number of arguments
 
 		file_name = argv[1];	// Get the file name from the arguments
 		fdf = init_fdf(file_name);	// Initialize the fdf structure
@@ -554,7 +554,7 @@ Functions:
 		render(fdf);	// Render the initial scene
 
 		mlx_key_hook(fdf->win, &key_handle, fdf);	// Set the key event handler
-		mlx_expose_hook(fdf->win, &expose_handle, fdf);	// Set the expose event handler
+		mlx_expose_hook(fdf->win, &key_press_handle, fdf);	// Set the expose event handler
 		mlx_loop(fdf->mlx);	// Enter the main loop
 
 		return (0);	// Return 0 to indicate successful completion
@@ -575,14 +575,14 @@ Functions:
 		t_point new_start, new_end;
 
 		// Calculate the new start coordinates using isometric projection
-		new_start.x = (line->start.x - line->start.y) * cos(ANG_30);
-		new_start.y = (line->start.x + line->start.y) * sin(ANG_30) - line->start.z;
+		new_start.x = (line->start.x - line->start.y) * cos(ANG_D_30);
+		new_start.y = (line->start.x + line->start.y) * sin(ANG_D_30) - line->start.z;
 		line->start.x = new_start.x;
 		line->start.y = new_start.y;
 
 		// Calculate the new end coordinates using isometric projection
-		new_end.x = (line->end.x - line->end.y) * cos(ANG_30);
-		new_end.y = (line->end.x + line->end.y) * sin(ANG_30) - line->end.z;
+		new_end.x = (line->end.x - line->end.y) * cos(ANG_D_30);
+		new_end.y = (line->end.x + line->end.y) * sin(ANG_D_30) - line->end.z;
 		line->end.x = new_end.x;
 		line->end.y = new_end.y;
 	}
@@ -598,7 +598,7 @@ Functions:
 		t_point new_start, new_end;
 		double z;
 
-		rotate_x(line, 3 * -ANG_45);	// Apply rotation around the x-axis
+		rotate_x(line, 3 * -ANG_D_45);	// Apply rotation around the x-axis
 
 		// Calculate the new start coordinates using perspective projection
 		z = line->start.z + line->transform_z;
@@ -659,7 +659,7 @@ Functions:
 		if (!line)
 			return (0);	// Return 0 if the file is empty
 
-		width = (int)ft_split_count(line, ' ');	// Calculate the width by counting the elements
+		width = (int)split_count(line, ' ');	// Calculate the width by counting the elements
 		free(line);
 
 		// Iterate through the remaining lines to check for consistency in width
@@ -668,7 +668,7 @@ Functions:
 			if (line == NULL)
 				break;
 
-			new_width = (int)ft_split_count(line, ' ');
+			new_width = (int)split_count(line, ' ');
 			if (width != new_width)
 				return (0);	// Return 0 if there is an inconsistency in width
 
@@ -805,7 +805,7 @@ Functions:
 
 		fd = open(file_name, O_RDONLY, 0);	// Open the file for reading
 		if (fd < 0)
-			error(2);	// Handle file reading error
+			error_by_code(2);	// Handle file reading error
 
 		close(fd);	// Close the file
 
@@ -836,14 +836,14 @@ This file contains the main rendering logic, including functions for drawing the
 
 Functions:
 
-1. apply_colors(t_fdf *fdf, t_point *point):
+1. put_colors(t_fdf *fdf, t_point *point):
 	- Purpose: Applies the appropriate color to a point based on its height and the current color settings.
 	- Parameters:
 	- t_fdf *fdf: The main structure containing camera and color settings.
 	- t_point *point: The point structure to which the color will be applied.
 	- Code Documentation:
 
-	static void apply_colors(t_fdf *fdf, t_point *point) {
+	static void put_colors(t_fdf *fdf, t_point *point) {
 		t_color *c = NULL;
 
 		if (fdf->cam->color_pallet == FALSE) {
@@ -875,8 +875,8 @@ Functions:
 		start.z *= fdf->cam->scale_z;	// Apply z-scale to the start point
 		end.z *= fdf->cam->scale_z;	// Apply z-scale to the end point
 
-		apply_colors(fdf, &start);	// Apply colors to the start point
-		apply_colors(fdf, &end);	// Apply colors to the end point
+		put_colors(fdf, &start);	// Apply colors to the start point
+		put_colors(fdf, &end);	// Apply colors to the end point
 
 		fdf->image->line = init_line(start, end, fdf);	// Initialize the line structure
 		if (!fdf->image->line)

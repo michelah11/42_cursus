@@ -57,17 +57,17 @@ Functions:
 
 	static void key_rotate(int keycode, t_fdf *fdf) {
 		if (keycode == KEY_S)
-			fdf->cam->alpha -= (5 * ANG_1);	// Rotate around the x-axis (down)
+			fdf->cam->alpha -= (5 * ANG_D_1);	// Rotate around the x-axis (down)
 		else if (keycode == KEY_W)
-			fdf->cam->alpha += (5 * ANG_1);	// Rotate around the x-axis (up)
+			fdf->cam->alpha += (5 * ANG_D_1);	// Rotate around the x-axis (up)
 		else if (keycode == KEY_A)
-			fdf->cam->gamma -= (5 * ANG_1);	// Rotate around the z-axis (left)
+			fdf->cam->gamma -= (5 * ANG_D_1);	// Rotate around the z-axis (left)
 		else if (keycode == KEY_D)
-			fdf->cam->gamma += (5 * ANG_1);	// Rotate around the z-axis (right)
+			fdf->cam->gamma += (5 * ANG_D_1);	// Rotate around the z-axis (right)
 		else if (keycode == KEY_Q)
-			fdf->cam->beta -= (5 * ANG_1);	// Rotate around the y-axis (left)
+			fdf->cam->beta -= (5 * ANG_D_1);	// Rotate around the y-axis (left)
 		else if (keycode == KEY_E)
-			fdf->cam->beta += (5 * ANG_1);	// Rotate around the y-axis (right)
+			fdf->cam->beta += (5 * ANG_D_1);	// Rotate around the y-axis (right)
 	}
 
 4. key_project(int keycode, t_fdf *fdf):

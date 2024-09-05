@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 20:49:02 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 03:39:01 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:17:11 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ float	scale_to_fit(t_map *map)
 
 	scale_x = WINDOW_WIDTH / map->max_x;
 	scale_y = WINDOW_HEIGHT / map->max_y;
-	scale_factor = min(scale_x, scale_y);
+	scale_factor = get_min(scale_x, scale_y);
 	if (scale_factor < 4)
 		return (2);
 	return (scale_factor / 2);

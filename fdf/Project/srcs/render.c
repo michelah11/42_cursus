@@ -6,17 +6,24 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:22:34 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:28:46 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:11:15 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	apply_colors(t_fdf *fdf, t_point *point)
+static void	colored_line(t_fdf *fdf, t_point *point, int color1, int color2)
 {
 	t_color	*c;
 
-	c = NULL;
+	c = color_pallet_init(color1, color2);
+	point->color = get_color(c, absolute(point->z),
+			absolute(fdf->map->max_z));
+	free(c);
+}
+
+static void	put_colors(t_fdf *fdf, t_point *point)
+{
 	if (fdf->cam->color_pallet == FALSE)
 	{
 		if (point->color == -1)
@@ -24,20 +31,18 @@ static void	apply_colors(t_fdf *fdf, t_point *point)
 	}
 	else
 	{
-		if (point->z >= 0)
-		{
-			c = color_pallet_init(C_GREY, C_ORANGY);
-			point->color = get_color(c, absolute(point->z),
-					absolute(fdf->map->max_z));
-			free(c);
-		}
+		if (point->z > 4)
+			colored_line(fdf, point, C_ORANGY, C_RED);
+		else if (point->z >= 2 && point->z < 4)
+			colored_line(fdf, point, C_YELLOW, C_ORANGY);
+		else if (point->z >= 0 && point->z < 2)
+			colored_line(fdf, point, C_GREEN, C_YELLOW);
+		else if (point->z >= -2 && point->z < 0)
+			colored_line(fdf, point, C_CYAN, C_GREEN);
+		else if (point->z >= -4 && point->z < -2)
+			colored_line(fdf, point, C_BLUEY, C_CYAN);
 		else
-		{
-			c = color_pallet_init(C_GREY, C_BLUEY);
-			point->color = get_color(c, absolute(point->z),
-					absolute(fdf->map->max_z));
-			free(c);
-		}
+			colored_line(fdf, point, C_BLUE, C_BLUEY);
 	}
 }
 
@@ -45,8 +50,8 @@ static void	render_line(t_fdf *fdf, t_point start, t_point end)
 {
 	start.z *= fdf->cam->scale_z;
 	end.z *= fdf->cam->scale_z;
-	apply_colors(fdf, &start);
-	apply_colors(fdf, &end);
+	put_colors(fdf, &start);
+	put_colors(fdf, &end);
 	fdf->image->line = init_line(start, end, fdf);
 	if (!fdf->image->line)
 		close_all(fdf, 7);

@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 20:33:44 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:31:15 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:05:22 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	bresenham(t_fdf *fdf, t_point start, t_point end)
 
 	x_step = end.x - start.x;
 	y_step = end.y - start.y;
-	max_steps = (int)max(absolute(x_step), absolute(y_step));
+	max_steps = (int)get_max(absolute(x_step), absolute(y_step));
 	x_step /= max_steps;
 	y_step /= max_steps;
 	color = color_init(start, end);
@@ -34,14 +34,14 @@ void	bresenham(t_fdf *fdf, t_point start, t_point end)
 		start.color = get_color(color, i_line++, max_steps);
 		if (start.x > 0 && start.y > 0 && start.x < WINDOW_WIDTH
 			&& start.y < WINDOW_HEIGHT)
-			pixel_to_image(fdf->image, start.x, start.y, start.color);
+			pixels_to_image(fdf->image, start.x, start.y, start.color);
 		start.x += x_step;
 		start.y += y_step;
 	}
 	free(color);
 }
 
-void	pixel_to_image(t_image *image, float x, float y, int color)
+void	pixels_to_image(t_image *image, float x, float y, int color)
 {
 	int	pixel;
 
@@ -74,7 +74,7 @@ void	clear_image(t_image *image, int image_size)
 		x = 0;
 		while (x < WINDOW_WIDTH)
 		{
-			pixel_to_image(image, x, y, BACKGROUND_DEFAULT);
+			pixels_to_image(image, x, y, BACKGROUND_DEFAULT);
 			x++;
 		}
 		y++;

@@ -25,7 +25,7 @@ The colors are typically passed as arguments to drawing functions or are used to
 
 Setting a Pixel Color: When drawing a pixel or a line, the program will use one of these color constants to specify the color.
 
-	pixel_to_image(image, x, y, C_RED);  // Draws a red pixel at coordinates (x, y)
+	pixels_to_image(image, x, y, C_RED);  // Draws a red pixel at coordinates (x, y)
 
 Gradients: When creating color gradients, the program might interpolate between two colors, such as C_WHITE and C_BLUEY,
 to create a smooth transition between them.

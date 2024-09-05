@@ -6,13 +6,13 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:01:13 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 03:53:54 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:07:19 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	error(int exit_code)
+void	error_by_code(int exit_code)
 {
 	if (exit_code == 0)
 		ft_putstr_fd("FDF closed.\n", 1);

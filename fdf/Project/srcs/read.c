@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 00:22:22 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 03:39:04 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:13:34 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static int	get_width(char *file_name)
 	line = get_next_line(fd);
 	if (!line)
 		return (0);
-	width = (int)ft_split_count(line, ' ');
+	width = (int)split_count(line, ' ');
 	free(line);
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		new_width = (int)ft_split_count(line, ' ');
+		new_width = (int)split_count(line, ' ');
 		if (width != new_width)
 			return (0);
 		free(line);
@@ -72,7 +72,7 @@ static void	fill_point(char *point, t_map *map, int coord_x, int coord_y)
 		info = ft_split(point, ',');
 		map->coordinates[coord_x][coord_y].z = (float)ft_atoi(info[0]);
 		map->coordinates[coord_x][coord_y].color
-			= ft_atoi_base(info[1], "0123456789abcdef");
+			= ft_atoi_base(info[1], HEXADECIMAL_L_BASE);
 		i = 0;
 		while (info[i])
 			free(info[i++]);
@@ -125,7 +125,7 @@ t_map	*read_map(char *file_name)
 
 	fd = open(file_name, O_RDONLY, 0);
 	if (fd < 0)
-		error(2);
+		error_by_code(2);
 	close(fd);
 	map = init_map();
 	if (!map)

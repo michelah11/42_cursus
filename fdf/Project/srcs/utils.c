@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 23:02:01 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 03:51:39 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:17:53 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ float	absolute(float n)
 		return (n);
 }
 
-float	max(float a, float b)
+float	get_max(float a, float b)
 {
 	if (a > b)
 		return (a);
@@ -28,7 +28,7 @@ float	max(float a, float b)
 		return (b);
 }
 
-float	min(float a, float b)
+float	get_min(float a, float b)
 {
 	if (a < b)
 		return (a);

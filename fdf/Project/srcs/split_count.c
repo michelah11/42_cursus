@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_count.c                                   :+:      :+:    :+:   */
+/*   split_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-size_t	ft_split_count(const char *s, char c)
+size_t	split_count(const char *s, char c)
 {
 	size_t	i;
 	size_t	prev;

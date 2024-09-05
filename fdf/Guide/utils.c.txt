@@ -19,7 +19,7 @@ Functions:
 	}
 
 
-2. max(float a, float b):
+2. get_max(float a, float b):
 	- Purpose: Returns the maximum of two floating-point numbers.
 	- Parameters:
 			- float a: The first number.
@@ -27,7 +27,7 @@ Functions:
 	- Returns: The maximum of the two numbers.
 	- Code Documentation:
 
-	float max(float a, float b) {
+	float get_max(float a, float b) {
 		if (a > b)
 			return (a);	// Return a if it is greater than b
 		else
@@ -35,7 +35,7 @@ Functions:
 	}
 
 
-3. min(float a, float b):
+3. get_min(float a, float b):
 	- Purpose: Returns the minimum of two floating-point numbers.
 	- Parameters:
 			- float a: The first number.
@@ -43,7 +43,7 @@ Functions:
 	- Returns: The minimum of the two numbers.
 	- Code Documentation:
 
-	float min(float a, float b) {
+	float get_min(float a, float b) {
 		if (a < b)
 			return (a);	// Return a if it is less than b
 		else

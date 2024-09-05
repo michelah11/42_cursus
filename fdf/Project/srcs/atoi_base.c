@@ -6,13 +6,13 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 01:40:53 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:11:15 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:05:40 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	sanitized_base(char *base)
+int	check_base(char *base)
 {
 	char	*str;
 	int		n;
@@ -40,7 +40,7 @@ int	sanitized_base(char *base)
 	return (n);
 }
 
-int	find_index(char c, char *str)
+int	get_index(char c, char *str)
 {
 	int	index;
 
@@ -55,7 +55,7 @@ int	find_index(char c, char *str)
 	return (-1);
 }
 
-int	has_char(char c, char *str)
+int	char_in(char c, char *str)
 {
 	while (*str)
 	{
@@ -72,7 +72,7 @@ int	ft_atoi_base(char *str, char *base)
 	int	number;
 	int	n;
 
-	n = sanitized_base(base);
+	n = check_base(base);
 	if (n < 2)
 		return (0);
 	sign = 1;
@@ -85,9 +85,9 @@ int	ft_atoi_base(char *str, char *base)
 			sign *= -1;
 		str++;
 	}
-	while (*str && has_char(*str, base))
+	while (*str && char_in(*str, base))
 	{
-		number = number * n + find_index(*str, base);
+		number = number * n + get_index(*str, base);
 		str++;
 	}
 	return (sign * number);

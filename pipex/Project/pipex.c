@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:04:05 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/01 05:10:37 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:07:28 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ int	main(int argc, char **argv, char **env)
 		handle_exit(1);
 	if (pipe(pipe_fd) == -1)
 	{
-		perror("pipex: pipe");
+		perror_by_code("pipex: pipe");
 		exit(1);
 	}
 	process_id = fork();
 	if (process_id == -1)
 	{
-		perror("pipex: fork");
+		perror_by_code("pipex: fork");
 		exit(1);
 	}
 	if (!process_id)

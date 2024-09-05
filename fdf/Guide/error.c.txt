@@ -3,13 +3,13 @@ This file contains a function for handling errors and terminating the program wi
 
 Functions:
 
-1. error(int exit_code):
+1. error_by_code(int exit_code):
 	- Purpose: Displays an error message corresponding to the given exit code and terminates the program.
 	- Parameters:
 	- int exit_code: The exit code indicating the type of error.
 	- Code Documentation:
 
-	void error(int exit_code) {
+	void error_by_code(int exit_code) {
 		if (exit_code == 0)
 			ft_putstr_fd("FDF closed.\n", 1);	// General close message
 		else if (exit_code == 1)

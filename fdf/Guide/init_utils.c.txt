@@ -73,7 +73,7 @@ Functions:
 		scale_x = WINDOW_WIDTH / map->max_x;	// Calculate the horizontal scale factor
 		scale_y = WINDOW_HEIGHT / map->max_y;	// Calculate the vertical scale factor
 
-		scale_factor = min(scale_x, scale_y);	// Choose the smaller scale factor to maintain aspect ratio
+		scale_factor = get_min(scale_x, scale_y);	// Choose the smaller scale factor to maintain aspect ratio
 		if (scale_factor < 4)
 			return (2);	// Return a minimum scale factor if necessary
 

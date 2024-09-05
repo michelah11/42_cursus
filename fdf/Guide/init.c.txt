@@ -25,12 +25,12 @@ Functions:
 
 		fdf = malloc(sizeof(t_fdf));	// Allocate memory for the main fdf structure
 		if (!fdf)
-			error(3);	// Handle error if memory allocation fails
+			error_by_code(3);	// Handle error if memory allocation fails
 		fdf->map = read_map(file_name);	// Read the map from the file
 		if (!fdf->map)
 		{
 			free(fdf);	// Free the fdf structure if map reading fails
-			error(4);	// Handle map reading error
+			error_by_code(4);	// Handle map reading error
 		}
 		fdf->mlx = mlx_init();	// Initialize the MLX library
 		fdf->win_x = WINDOW_WIDTH;
@@ -149,7 +149,7 @@ Functions:
 		line->end.y = end.y;
 		line->end.z = end.z;
 		line->end.color = end.color;
-		line->transform_z = max((fdf->map->max_z - fdf->map->min_z),
+		line->transform_z = get_max((fdf->map->max_z - fdf->map->min_z),
 								max(fdf->map->max_x, fdf->map->max_y));	// Calculate the z-transform factor
 		return (line);	// Return the initialized line structure
 	}

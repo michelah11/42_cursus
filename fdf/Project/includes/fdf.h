@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 00:43:50 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/26 19:09:23 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:11:37 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,15 @@
 # define WINDOW_HEIGHT		900
 # define MAX_PIXEL			1080000
 
-/*
-** Colors configuration
-*/
 # define LINE_DEFAULT		C_WHITE
 # define BACKGROUND_DEFAULT	C_GREY
 # define C_TEXT				C_WHITE
 
-/*
-** Conversion bases & useful angles in rad
-*/
 # define HEXADECIMAL_L_BASE	"0123456789abcdef"
-# define ANG_1				0.01745329
-# define ANG_30				0.52359877
-# define ANG_45				0.78539816
+# define ANG_D_1				0.01745329
+# define ANG_D_30				0.52359877
+# define ANG_D_45				0.78539816
 
-/*
-** Enumerator for projection names and boolean
-*/
 enum e_projection
 {
 	ISOMETRIC,
@@ -132,8 +123,8 @@ typedef struct s_fdf
 	t_cam	*cam;
 }	t_fdf;
 
-float	min(float a, float b);
-float	max(float a, float b);
+float	get_min(float a, float b);
+float	get_max(float a, float b);
 float	absolute(float n);
 void	transform(t_cam *cam, t_line *line);
 void	translate(t_line *line, int move_x, int move_y);
@@ -156,9 +147,9 @@ void	reset(t_fdf *fdf);
 float	scale_to_fit(t_map *map);
 void	center_to_origin(t_map *map);
 t_point	**init_coordinates(int width, int depth);
-void	error(int exit_code);
+void	error_by_code(int exit_code);
 void	bresenham(t_fdf *fdf, t_point start, t_point end);
-void	pixel_to_image(t_image *image, float x, float y, int color);
+void	pixels_to_image(t_image *image, float x, float y, int color);
 void	clear_image(t_image *image, int image_size);
 int		get_color(t_color *color, int i_line, int line_size);
 t_color	*color_init(t_point start, t_point end);
@@ -166,9 +157,8 @@ t_color	*color_pallet_init(int min_color, int max_color);
 void	close_all(t_fdf *fdf, int exit_code);
 void	close_map(t_fdf *fdf, int exit_code);
 int		ft_atoi_base(char *str, char *base);
-size_t	ft_split_count(const char *s, char c);
+size_t	split_count(const char *s, char c);
 void	bresenham(t_fdf *fdf, t_point start, t_point end);
-void	pixel_to_image(t_image *image, float x, float y, int color);
-void	clear_image(t_image *image, int image_size);
+void	pixels_to_image(t_image *image, float x, float y, int color);
 
 #endif

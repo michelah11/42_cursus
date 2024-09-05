@@ -3,14 +3,14 @@ This file contains functions for handling base conversions, specifically convert
 
 Functions:
 
-1. sanitized_base(char *base):
+1. check_base(char *base):
 	- Purpose: Validates the given base string, ensuring it contains no duplicate characters or invalid symbols like +, -, or spaces.
 	- Parameters:
 		- char *base: The string representing the base.
 	- Returns: The length of the base if valid, or 0 if the base is invalid.
 	- Code Documentation:
 
-	int sanitized_base(char *base)
+	int check_base(char *base)
 	{
 		char	*str;
 		int		n;	// Counter for base length
@@ -39,7 +39,7 @@ Functions:
 		return (n);	// Return the length of the valid base
 	}
 
-2. find_index(char c, char *str):
+2. get_index(char c, char *str):
 	- Purpose: Finds the index of a character c in the string str.
 	- Parameters:
 		- char c: The character to find.
@@ -47,7 +47,7 @@ Functions:
 	- Returns: The index of the character in the string, or -1 if not found.
 	- Code Documentation:
 
-	int find_index(char c, char *str) {
+	int get_index(char c, char *str) {
 		int	index;
 
 		index = 0;	// Initialize the index
@@ -61,7 +61,7 @@ Functions:
 		return (-1);	// Return -1 if the character is not found
 	}
 
-3. has_char(char c, char *str):
+3. char_in(char c, char *str):
 	- Purpose: Checks if a character c exists in the string str.
 	- Parameters:
 		- char c: The character to check for.
@@ -69,7 +69,7 @@ Functions:
 	- Returns: 1 if the character is found, 0 otherwise.
 	- Code Documentation:
 
-	int has_char(char c, char *str) {
+	int char_in(char c, char *str) {
 		while (*str)	// Iterate over the string
 		{
 			if (c == *str)
@@ -96,7 +96,7 @@ Functions:
 
 		sign = 1;	// Initialize the sign as positive
 		number = 0;
-		n = sanitized_base(base);	// Validate the base and get its length
+		n = check_base(base);	// Validate the base and get its length
 		if (n < 2)
 			return (0);	// Return 0 if the base is invalid
 		while (*str == 32 || (*str >= 9 && *str <= 13))	// Skip whitespace characters
@@ -107,9 +107,9 @@ Functions:
 				sign *= -1;	// Toggle the sign if a '-' is found
 			str++;
 		}
-		while (*str && has_char(*str, base))	// Construct the number using the base
+		while (*str && char_in(*str, base))	// Construct the number using the base
 		{
-			number = number * n + find_index(*str, base);
+			number = number * n + get_index(*str, base);
 			str++;
 		}
 		return (sign * number);	// Return the signed number

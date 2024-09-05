@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:51:28 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/24 02:15:16 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:05:47 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ t_fdf	*init_fdf(char *file_name)
 
 	fdf = malloc(sizeof(t_fdf));
 	if (!fdf)
-		error(3);
+		error_by_code(3);
 	fdf->map = read_map(file_name);
 	if (!fdf->map)
 	{
 		free(fdf);
-		error(4);
+		error_by_code(4);
 	}
 	fdf->mlx = mlx_init();
 	fdf->win_x = WINDOW_WIDTH;
@@ -101,7 +101,7 @@ t_line	*init_line(t_point start, t_point end, t_fdf *fdf)
 	line->end.y = end.y;
 	line->end.z = end.z;
 	line->end.color = end.color;
-	line->transform_z = max((fdf->map->max_z - fdf->map->min_z),
-			max(fdf->map->max_x, fdf->map->max_y));
+	line->transform_z = get_max((fdf->map->max_z - fdf->map->min_z),
+			get_max(fdf->map->max_x, fdf->map->max_y));
 	return (line);
 }

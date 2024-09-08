@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:34:31 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/19 03:33:51 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/08 23:23:32 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ void	stack_init(t_node **a, char **argv)
 	while (argv[i])
 	{
 		if (error_syntax(argv[i]))
-			free_errors(a);
+			free_errors(a, argv);
 		nbr = ft_atol(argv[i]);
 		if (nbr > INT_MAX || nbr < INT_MIN)
-			free_errors(a);
+			free_errors(a, argv);
 		if (error_duplicate(*a, (int)nbr))
-			free_errors(a);
+			free_errors(a, argv);
 		append_node(a, (int)nbr);
 		i++;
 	}

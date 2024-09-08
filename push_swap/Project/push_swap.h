@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:26 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/08 16:36:35 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/08 23:22:58 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_node
 int		error_syntax(char *arg);
 int		error_duplicate(t_node *a, int nbr);
 void	free_stack(t_node **stack);
-void	free_errors(t_node **a);
+void	free_errors(t_node **a, char **argv);
 void	set_current_position(t_node *stack);
 void	set_cheapest(t_node *stack);
 void	set_price(t_node *a, t_node *b);

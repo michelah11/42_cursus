@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:33:26 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/19 03:55:09 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/08 16:36:35 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ typedef struct s_node
 {
 	int				number;
 	int				current_position;
-	int				final_index;
 	int				push_price;
 	bool			above_median;
 	bool			cheapest;

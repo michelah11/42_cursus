@@ -1,17 +1,13 @@
 #!/bin/bash
 
-# Paths to your push_swap and checker_linux executables
 PUSH_SWAP="./push_swap"
 CHECKER_LINUX="./checker_linux"
 
-# Number of times to run each test
-NUM_RUNS=5
+NUM_RUNS=10
 
-# Output file for test results
 OUTPUT_FILE="push_swap_test_results.txt"
-> $OUTPUT_FILE # Clear the file before starting
+> $OUTPUT_FILE
 
-# Function to test identity
 test_identity() {
     echo "==============================" | tee -a $OUTPUT_FILE
     echo "Testing Identity..." | tee -a $OUTPUT_FILE
@@ -36,7 +32,6 @@ test_identity() {
     return 0
 }
 
-# Function to test simple cases with checker and calculate average operations
 test_simple() {
     echo "==============================" | tee -a $OUTPUT_FILE
     echo "Testing Simple Case..." | tee -a $OUTPUT_FILE
@@ -73,7 +68,6 @@ test_simple() {
     return 0
 }
 
-# Function to test error management
 test_errors() {
     echo "==============================" | tee -a $OUTPUT_FILE
     echo "Testing Error Management..." | tee -a $OUTPUT_FILE
@@ -103,7 +97,6 @@ test_errors() {
     return 0
 }
 
-# Function to test middle version with 100 random values and calculate average operations (output suppressed)
 test_middle() {
     echo "==============================" | tee -a $OUTPUT_FILE
     echo "Testing Middle Version (100 random values)..." | tee -a $OUTPUT_FILE
@@ -138,7 +131,6 @@ test_middle() {
     return 0
 }
 
-# Function to test advanced version with 500 random values and calculate average operations (output suppressed)
 test_advanced() {
     echo "==============================" | tee -a $OUTPUT_FILE
     echo "Testing Advanced Version (500 random values)..." | tee -a $OUTPUT_FILE
@@ -173,7 +165,6 @@ test_advanced() {
     return 0
 }
 
-# Running all tests
 test_identity || exit 1
 test_simple || exit 1
 test_errors || exit 1

@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stddef.h>
 
-char *ft_strpbrk(const char *s, const char *reject)
+char *ft_strpbrk(const char *s1, const char *s2)
 {
 	size_t j;
 	size_t k;
 
 	k = 0;
-	while (*s)
+	while (*s1)
 	{
 		j = 0;
-		while (reject[j])
+		while (s2[j])
 		{
-			if (reject[j] == *s)
+			if (s2[j] == *s1)
 			{
 				k = j;
 				break ;
@@ -21,9 +21,9 @@ char *ft_strpbrk(const char *s, const char *reject)
 		}
 		if (k)
 			break ;
-		s++;
+		s1++;
 	}
-	return (s);
+	return (s1);
 }
 
 

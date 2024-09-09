@@ -44,6 +44,7 @@ $(OBJS_DIR):
 
 localclean:
 	@$(RM) $(OBJS)
+	@$(RM) $(OBJS_DIR)
 	@echo "Removed object files."
 
 clean: localclean
@@ -57,6 +58,7 @@ fclean:
 	@$(MAKE) fclean -s -C $(LIBFT_DIR)
 	@$(MAKE) fclean -s -C $(GNL_DIR)
 	@$(MAKE) clean -s -C $(MLX_DIR)
+	@$(RM) $(OBJS_DIR)
 	@echo "Removed executable $(NAME)."
 
 re: fclean all

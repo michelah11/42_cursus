@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 16:48:30 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/06 01:37:16 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/09 02:46:15 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,19 @@
 # define C_WHITE 0xffffff
 # define C_GREY 0x222222
 # define C_RED 0xff0000
-# define C_ORANGE 0xff9400
+# define C_ORANGERED 0xff4500
+# define C_ORANGE 0xffa500
+# define C_GOLD 0xffd700
 # define C_YELLOW 0xffff00
-# define C_GREEN 0x00ff00
+# define C_LIME 0x00ff00
+# define C_GREEN 0x008000
+# define C_TEAL 0x008080
 # define C_CYAN 0x00ffff
+# define C_LBLUE 0x00c0ff
 # define C_BLUE 0x0000ff
-# define C_PINK 0xff00ff
+# define C_INDIGO 0x4b0082
+# define C_VIOLET 0xee82ee
+# define C_PINK 0xff69b4
 
 
 #endif

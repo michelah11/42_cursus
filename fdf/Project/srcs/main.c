@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:55:36 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/05 03:12:11 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/09 02:52:08 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 static int	key_press_handle(t_fdf *fdf)
 {
 	render(fdf);
+	return (0);
+}
+
+static int	handle_exit(t_fdf *fdf)
+{
+	close_all(fdf, 0);
+	exit(0);
 	return (0);
 }
 
@@ -30,5 +37,6 @@ int	main(int argc, char **argv)
 	render(fdf);
 	mlx_key_hook(fdf->win, &key_handle, fdf);
 	mlx_expose_hook(fdf->win, &key_press_handle, fdf);
+	mlx_hook(fdf->win, 17, 0, handle_exit, fdf);
 	mlx_loop(fdf->mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 16:38:36 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/06 01:19:27 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/09 20:48:37 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,7 @@
 # define KEY_K 107
 # define KEY_L 108
 # define KEY_ESC 65307
+
+# define X_ICON_WIN 17
 
 #endif

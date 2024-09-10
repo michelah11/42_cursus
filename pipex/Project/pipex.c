@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:04:05 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/10 03:19:52 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:06:10 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,13 @@ void	child_process(char **argv, int *pipe_fd, char **env)
 	char *error;
 
 	fd = open_file(argv[1], 0);
-	printf("%d\n", fd);
 	if (fd < 0)
 	{
-		shell = ft_strchr(retrieve_env("SHELL", env), '/');
+		shell = ft_strrchr(retrieve_env("SHELL", env), '/');
 		str = ft_strdup(strerror(errno));
 		str[0] += 32;
-		error = ft_strjoin(shell + 1, ft_strjoin(str, ": "));
-		printf("%s\n",error);
-		ft_putendl_fd(argv[1], 2);
+		error = ft_strjoin(shell + 1, ft_strjoin(": ", ft_strjoin(argv[1], ": ")));
+		ft_putendl_fd(ft_strjoin(error, str), 2);
 		exit(1);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -90,6 +88,5 @@ int	main(int argc, char **argv, char **env)
 	waitpid(process_id, NULL, 0);
 	parent_process(argv, pipe_fd, env, fd);
 	close (fd);
-	printf("hakunamatata");
 	return (0);
 }

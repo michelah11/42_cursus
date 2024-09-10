@@ -1,18 +1,11 @@
-# Makefile
-
 NAME = pipex
-
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
-
+LIBFT = ./libft/libft.a
 SRCS = pipex.c utils.c
 OBJS = $(SRCS:.c=.o)
-DEPS = pipex.h
 
-LIBFT = ./libft/libft.a
-
-# Targets
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
@@ -31,3 +24,4 @@ fclean: clean
 
 re: fclean all
 
+.PHONY:		all clean fclean re

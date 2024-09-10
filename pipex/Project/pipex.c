@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:04:05 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/10 17:06:10 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/11 02:52:01 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	execute_command(char *command, char **env)
 
 void	child_process(char **argv, int *pipe_fd, char **env)
 {
-	int	fd;
-	char *str;
-	char *shell;
-	char *error;
+	int		fd;
+	char	*str;
+	char	*shell;
+	char	*error;
 
 	fd = open_file(argv[1], 0);
 	if (fd < 0)
@@ -43,7 +43,8 @@ void	child_process(char **argv, int *pipe_fd, char **env)
 		shell = ft_strrchr(retrieve_env("SHELL", env), '/');
 		str = ft_strdup(strerror(errno));
 		str[0] += 32;
-		error = ft_strjoin(shell + 1, ft_strjoin(": ", ft_strjoin(argv[1], ": ")));
+		error = ft_strjoin(shell + 1, ": ");
+		error = ft_strjoin(error, ft_strjoin(argv[1], ": "));
 		ft_putendl_fd(ft_strjoin(error, str), 2);
 		exit(1);
 	}
@@ -65,7 +66,7 @@ int	main(int argc, char **argv, char **env)
 {
 	int		pipe_fd[2];
 	pid_t	process_id;
-	int 	fd;
+	int		fd;
 
 	if (argc != 5)
 		handle_exit(1);
@@ -87,6 +88,5 @@ int	main(int argc, char **argv, char **env)
 		child_process(argv, pipe_fd, env);
 	waitpid(process_id, NULL, 0);
 	parent_process(argv, pipe_fd, env, fd);
-	close (fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:03:50 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/08/31 23:14:14 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/10 02:26:22 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*retrieve_env(char *name, char **env);
 char	*find_command_path(char *command, char **env);
 void	execute_command(char *command, char **env);
 void	child_process(char **av, int *pipe_fd, char **env);
-void	parent_process(char **av, int *pipe_fd, char **env);
-
+void	parent_process(char **argv, int *pipe_fd, char **env, int fd);
 
 #endif

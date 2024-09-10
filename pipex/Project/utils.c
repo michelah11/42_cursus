@@ -6,7 +6,7 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:04:37 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/01 05:10:57 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/10 03:13:42 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	open_file(char *filename, int in_out_mode)
 		fd = open(filename, O_RDONLY);
 	else
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		exit(0);
 	return (fd);
 }
 
@@ -75,17 +73,16 @@ char	*find_command_path(char *command, char **env)
 	char	*cmd_path;
 	char	**path_dirs;
 	char	*exec_path;
-	char	**s_cmd;
 
 	path_dirs = ft_split(retrieve_env("PATH", env), ':');
-	s_cmd = ft_split(command, ' ');
+	printf("%s", retrieve_env("PATH", env));
 	i = 0;
 	while (path_dirs[i])
 	{
 		cmd_path = ft_strjoin(path_dirs[i], "/");
-		exec_path = ft_strjoin(cmd_path, s_cmd[0]);
+		exec_path = ft_strjoin(cmd_path, command);
 		free(cmd_path);
-		if (access(exec_path, F_OK | X_OK) == 0)
+		if (access(exec_path, F_OK) == 0)
 		{
 			free_str(path_dirs);
 			return (exec_path);
@@ -94,6 +91,5 @@ char	*find_command_path(char *command, char **env)
 		i++;
 	}
 	free_str(path_dirs);
-	free_str(s_cmd);
 	return (NULL);
 }

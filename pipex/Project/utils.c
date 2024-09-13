@@ -6,28 +6,29 @@
 /*   By: mabou-ha <mabou-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:04:37 by mabou-ha          #+#    #+#             */
-/*   Updated: 2024/09/10 03:13:42 by mabou-ha         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:02:12 by mabou-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	handle_exit(int exit_code)
+void	error(int exit_code)
 {
 	if (exit_code == 1)
-		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
+		ft_putstr_fd("Pipex: Pipe failed\n", 2);
+	else if (exit_code == 2)
+		ft_putstr_fd("Pipex: Fork failed\n", 2);
+	else if (exit_code == 3)
+		ft_putstr_fd("Pipex: Command execution failed\n", 2);
+	else if (exit_code == 4)
+		ft_putstr_fd("Pipex: File could not be opened\n", 2);
+	else if (exit_code == 5)
+		ft_putstr_fd("Pipex: Command path not found\n", 2);
+	else if (exit_code == 6)
+		ft_putstr_fd("Pipex: Command not found\n", 2);
+	else if (exit_code == 7)
+		ft_putstr_fd("Pipex: Execve failed\n", 2);
 	exit(0);
-}
-
-int	open_file(char *filename, int in_out_mode)
-{
-	int	fd;
-
-	if (in_out_mode == 0)
-		fd = open(filename, O_RDONLY);
-	else
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	return (fd);
 }
 
 void	free_str(char **str)
@@ -43,53 +44,29 @@ void	free_str(char **str)
 	free(str);
 }
 
-char	*retrieve_env(char *name, char **env)
-{
-	int		i;
-	int		j;
-	char	*sub;
-
-	i = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (env[i][j] && env[i][j] != '=')
-			j++;
-		sub = ft_substr(env[i], 0, j);
-		while (ft_strcmp(sub, name) == 0)
-		{
-			free(sub);
-			return (env[i] + j + 1);
-		}
-		free(sub);
-		i++;
-	}
-	return (NULL);
-}
-
 char	*find_command_path(char *command, char **env)
 {
 	int		i;
-	char	*cmd_path;
-	char	**path_dirs;
-	char	*exec_path;
+	char	*part_path;
+	char	*path;
+	char	**paths;
 
-	path_dirs = ft_split(retrieve_env("PATH", env), ':');
-	printf("%s", retrieve_env("PATH", env));
 	i = 0;
-	while (path_dirs[i])
+	while(ft_strnstr(env[i], "PATH", 4) == 0)
+		i++;
+	paths = ft_split(env[i] + 5, ':');
+	i = 0;
+	while (paths[i])
 	{
-		cmd_path = ft_strjoin(path_dirs[i], "/");
-		exec_path = ft_strjoin(cmd_path, command);
-		free(cmd_path);
-		if (access(exec_path, F_OK) == 0)
-		{
-			free_str(path_dirs);
-			return (exec_path);
-		}
-		free(exec_path);
+		part_path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(part_path, command);
+		free(part_path);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
 		i++;
 	}
-	free_str(path_dirs);
-	return (NULL);
+	i = 0;
+	free_str(paths);
+	return (0);
 }

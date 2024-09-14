@@ -1,0 +1,94 @@
+main.c:
+This file contains the main entry point of the program. It initializes all components and starts the event loop for rendering and user input.
+
+    - Functions:
+
+        - main(int argc, char **argv):
+
+            - Variables:
+                file_name: The name of the map file, passed as a command-line argument.
+            - Block Behavior:
+                Initializes the fdf structure, sets up event hooks for keyboard input and window events, and starts the rendering loop using mlx_loop().
+                If the wrong number of arguments is provided, it displays a usage message and exits.
+
+        - key_press_handle(t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Triggers re-rendering of the map when a key is pressed.
+
+        -handle_exit(t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Closes the program and frees resources when the user attempts to close the window.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+menu.c:
+This file provides an on-screen menu to guide the user with the available controls and current projection mode.
+
+    - Functions:
+
+        - get_projection_name(t_fdf *fdf):
+
+            - Variables:
+                projection: A string representing the current projection mode.
+            - Block Behavior:
+                Returns the name of the current projection mode based on the camera’s projection field (e.g., "Isometric projection").
+
+        - print_menu(t_fdf *fdf):
+
+            - Variables:
+                y: Tracks the vertical position of the text on the screen.
+            - Block Behavior:
+                Displays the available controls and the current projection mode on the screen using mlx_string_put().
+                This helps the user understand how to interact with the program and provides visual feedback on the current settings.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+read.c:
+This file reads the map file, processes its data, and stores it in the t_map structure.
+
+    - Functions:
+
+        - get_width(char *file_name):
+
+            - Variables:
+                width: Stores the number of columns (points) in each line of the map file.
+                line: Stores the current line of the map file being read.
+            - Block Behavior:
+                Reads the first line of the map file and counts the number of space-separated values to determine the width of the map (the number of points in each row).
+
+        - get_depth(char *file_name):
+
+            - Variables:
+                depth: Stores the number of lines in the map file.
+            - Block Behavior:
+                Counts the number of non-empty lines in the map file to determine its depth (the number of rows).
+
+        - fill_point(char *point, t_map *map, int coord_x, int coord_y):
+
+            - Variables:
+                info: Stores the height and color information parsed from the point string.
+                coord_x, coord_y: The X and Y coordinates of the point being filled.
+            - Block Behavior:
+                Parses the Z value (height) and optional color from the string point, then stores them in the map->coordinates array at position (coord_x, coord_y).
+
+        - get_points(char *file_name, t_map *map):
+
+            - Variables:
+                coord: Array holding the current X and Y coordinates being processed.
+                line:Stores the current line of the map file.
+            - Block Behavior:
+                Reads each line of the map file and fills the 2D array map->coordinates by parsing each point’s Z value and optional color.
+
+        - read_map(char *file_name):
+
+            - Variables:
+                map: A newly allocated t_map structure.
+            - Block Behavior:
+                Reads the entire map file, determines the map’s width and depth, and populates the t_map structure with point data.
+                If an error occurs during reading or parsing, it frees the allocated resources and returns NULL.

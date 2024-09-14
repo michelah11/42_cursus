@@ -1,0 +1,106 @@
+atoi_base.c:
+This file provides a base conversion function, allowing you to convert a string to an integer based on a custom numeric
+base (e.g., base 2 for binary, base 16 for hexadecimal).
+
+    - Functions:
+
+        - check_base(char *base):
+
+            - Variables:
+                str: Temporary pointer to iterate through the base string.
+                n: Counter to track the length of the base.
+                i: Index for the outer loop, used to go through each character of the base.
+                j: Index for the inner loop, checks for duplicate characters starting from the next character after i.
+            - Block Behavior:
+                The outer loop iterates over each character in the base. For each character at index i, the inner loop (starting at j = i + 1)
+                checks the subsequent characters to ensure there are no duplicates. It also checks if the base contains invalid characters
+                like +, -, or space. If any are found, it immediately returns 0. If no errors are encountered, it returns the length of the base (n).
+            - Concept:
+                This function ensures that the base provided is suitable for numerical conversions, with unique digits and no invalid characters.
+
+        - get_index(char c, char *str):
+            - Variables:
+                index: Tracks the position of c within str.
+            - Block Behavior:
+                Loops through the string str, checking if c matches any character. If a match is found, it returns the index of the character.
+                If no match is found, it returns -1, indicating that c is not in str.
+        
+        - char_in(char c, char *str):
+
+            - Variables:
+           None.
+            - Block Behavior:
+                A simple loop checks if character c exists in the string str. If found, it returns 1; otherwise, it returns 0.
+
+        - ft_atoi_base(char *str, char *base):
+
+            - Variables:
+                sign: Tracks whether the number is positive or negative (initially set to 1 for positive numbers).
+                number: The result of the conversion.
+                n: Th   e length of the base (obtained using check_base()).
+            - Block Behavior:
+                The function first validates the base using check_base(). If invalid, it returns 0.
+                It skips whitespace characters (ASCII values 9-13 and 32), then processes any signs (+ or -). A minus sign flips the value of sign.
+                For each character in the string that exists in the base, it multiplies the current number by the base length and adds the index of the 
+                current character (obtained using get_index()). Finally, the sign is applied to the result and returned.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+error.c:
+This file provides error handling by printing appropriate error messages based on the exit code.
+
+    - Functions:
+
+        - error_by_code(int exit_code):
+
+            - Variables:
+                exit_code: The code indicating the type of error.
+            - Block Behavior:
+                Checks the value of exit_code and prints a corresponding error message to standard output (e.g., "Cannot read file" for exit_code == 2).
+                After displaying the message, the program exits with the provided exit_code.
+            - Concept:
+                Error handling is a crucial part of any program to ensure that users understand what went wrong. This function handles all potential
+                error codes and gracefully exits the program.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+split_count.c:
+This file contains a utility function to count the number of substrings in a string separated by a given character.
+
+    - Function:
+
+        - split_count(const char *s, char c):
+
+            - Variables:
+                i, prev, next: Loop counters and indices for tracking substrings.
+                counter: Counts the number of substrings.
+            - Block Behavior:
+                Iterates through the string, counting how many substrings are separated by the character c.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+utils.c:
+This file contains common utility functions that are used throughout the project.
+
+    - Functions:
+
+        - absolute(float n):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Returns the absolute value of n.
+
+        - get_max(float a, float b):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Returns the larger of two values, a and b.
+
+        - get_min(float a, float b):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Returns the smaller of two values, a and b.

@@ -1,0 +1,18 @@
+- fdf.h
+    - Structures:
+
+        - t_point: Represents a 3D point with x, y, z coordinates and a color.
+        - t_map: Holds the 2D array of points that make up the map, along with the map’s boundaries (max_x, max_y, max_z, min_z).
+        - t_line: Represents a line between two points.
+        - t_color: Holds color information for color gradients.
+        - t_image: Represents an image buffer, including its pixel data and format information.
+        - t_cam: Represents the camera, which controls how the map is viewed (projection, scaling, movement, rotation).
+        - t_fdf: The main structure that holds everything together, including the map, camera, and image.
+
+- colors.h: This file defines color constants (in hexadecimal) for use throughout the program.
+    - Example:
+        - C_WHITE: Represents the color white (0xffffff).
+
+- keys.h: This file defines constants for keyboard keys used in the program.
+    - Example:
+        - KEY_LEFT: Represents the left arrow key (65361).

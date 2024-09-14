@@ -1,0 +1,110 @@
+rotate.c:
+This file handles applying rotation transformations to the map around the X, Y, and Z axes.
+
+    - Functions:
+
+        - rotate_x(t_line *line, double angle):
+
+            - Variables:
+                new_start, new_end: Temporary variables for the new coordinates after rotation.
+            - Block Behavior:
+                Rotates the start and end points of the line around the X-axis by the given angle.
+
+        - rotate_y(t_line *line, double angle):
+
+            - Variables:
+                Similar to rotate_x().
+            - Block Behavior:
+                Rotates the start and end points around the Y-axis.
+
+        - rotate_z(t_line *line, double angle):
+
+            - Variables:
+                Similar to rotate_x().
+            - Block Behavior:
+                Rotates the start and end points around the Z-axis.
+
+        - rotate(t_cam *cam, t_line *line):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Applies all three rotations (X, Y, and Z) based on the camera’s current rotation settings.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+transform.c:
+This file handles transformations such as scaling and translation, which adjust the position and size of the map on the screen.
+
+    - Functions:
+
+        - scale(t_line *line, int scale_factor):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Multiplies the coordinates of the start and end points of the line by the scale_factor.
+
+        - translate(t_line *line, int move_x, int move_y):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Shifts the start and end points of the line horizontally by move_x and vertically by move_y.
+
+        - transform(t_cam *cam, t_line *line):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Applies both scaling and translation to the line based on the camera’s current settings.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+project.c:
+This file handles applying different projections (Isometric, Perspective, Front, Side, Top) to the map's points.
+
+    - Functions:
+
+        - isometric(t_line *line):
+
+            - Variables:
+                new_start, new_end: Temporary variables for the new coordinates after applying the isometric projection.
+            - Block Behavior:
+                Applies an isometric projection to the start and end points of the line by rotating the X and Y axes by 30 degrees.
+                Adjusts the Z axis to simulate depth.
+            - Concept:
+                Isometric projection is a common way to represent 3D objects in 2D while preserving the sense of depth. The
+                angles between the X, Y, and Z axes are equal, creating a uniform view.
+
+        - perspective(t_line *line):
+
+            - Variables:
+                new_start, new_end: Temporary variables for the new coordinates after applying the perspective projection.
+                z: Adjusted Z values used to simulate depth.
+            - Block Behavior:
+                Applies a perspective projection, where distant objects appear smaller, mimicking how human vision works.
+            - Concept:
+                Perspective projection is used to give a realistic sense of depth, where lines converge toward a vanishing point,
+                making distant objects appear smaller.
+
+        - front(t_line *line):
+
+            - Variables:
+                Similar to perspective().
+            - Block Behavior:
+                Projects the map from a front view, where the viewer looks directly at the front of the map, without perspective distortion.
+
+        - side(t_line *line):
+
+            - Variables:
+                Similar to perspective().
+            - Block Behavior:
+                Projects the map from a side view, where the viewer looks at the map from the side.
+
+        - project(t_cam *cam, t_line *line):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Applies the currently selected projection mode (Isometric, Perspective, Front, Side, or Top) to the line.

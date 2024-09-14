@@ -1,0 +1,122 @@
+draw.c:
+This file contains drawing functions, including the implementation of Bresenham's line drawing algorithm, which is essential for rendering lines between points in a grid.
+
+    - Functions:
+
+        - bresenham(t_fdf *fdf, t_point start, t_point end):
+
+            - Variables:
+                x_step, y_step: The horizontal and vertical increments for each step of the line.
+                max_steps: The total number of steps required to draw the line (calculated as the maximum of the absolute differences in x or y).
+                i_line: The current step along the line.
+                color: Stores the color gradient between the start and end points.
+            - Block Behavior:
+                The function calculates the step size for both the x and y directions, ensuring the line is drawn at the correct slope.
+                At each step (i_line), it interpolates the color using get_color() and draws a pixel at the current position using pixels_to_image().
+                This implementation of Bresenham’s algorithm ensures that lines are drawn accurately, even when they have steep slopes.
+            - Concept (Bresenham’s Algorithm):
+                Bresenham's line algorithm is an efficient way to draw straight lines on a pixel grid using only integer arithmetic, which is much
+                faster than floating-point calculations. It calculates the path of a line by determining the most significant axis of movement (either
+                horizontal or vertical) and incrementing along that axis while adjusting for the minor axis.
+        
+        - pixels_to_image(t_image *image, float x, float y, int color):
+
+            - Variables:
+                pixel: The position in the image buffer where the pixel data is written.
+            - Block Behavior:
+                The function calculates the exact position in the image buffer where the pixel should be drawn, taking into account the image’s byte format (endian).
+                Depending on the system's endianness, it correctly sets the color components (red, green, blue, alpha) in the buffer.
+            - Concept (Image Buffers and Pixels):
+                The image buffer in MiniLibX is essentially a 1D array where each pixel’s color is stored as a series of bytes. The position of a pixel
+                is determined by its (x, y) coordinates, and its color is a combination of its red, green, and blue components. Handling different byte
+                orders (big-endian or little-endian) ensures that the color data is stored correctly regardless of the system architecture.
+
+        - clear_image(t_image *image, int image_size):
+
+            - Variables:
+                x, y: Loop counters for clearing each pixel in the image.
+            - Block Behavior:
+                Fills the entire image buffer with the default background color, effectively clearing the image before the next frame is drawn.
+            - Concept:
+                Clearing the image before rendering a new frame is essential in graphics applications to avoid residual data from previous frames.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+color.c:
+This file is responsible for color handling, including creating gradients for smooth transitions between two colors.
+
+    - Functions:
+
+        - color_gradient(t_color *color, float progress):
+
+            - Variables:
+           r, g, b: Store the calculated red, green, and blue values for the gradient at a given progress.
+            - Block Behavior:
+                Interpolates between the start and end colors of the gradient by multiplying the color differences (delta_r, delta_g, delta_b) by progress.
+                Shifts the red, green, and blue values to the correct bit positions, then combines them into a single integer representing the color.
+                Handles overflow and underflow conditions to ensure the color values stay within the valid range (0-255).
+            - Concept:
+                Gradient generation is common in graphics applications where smooth transitions between two colors are required. This function computes
+                the color at a given position in the gradient.
+
+        - get_color(t_color *color, int i_line, int line_size):
+
+            - Variables:
+                progress: A float representing the position along the line (calculated as i_line / line_size).
+            - Block Behavior:
+                Converts the line position into a progress value and uses color_gradient() to get the interpolated color at that position.
+            - Concept:
+                Interpolating colors along a line makes objects appear smoother, especially when drawing between two points with different colors.
+
+        - color_init(t_point start, t_point end):
+
+            - Variables:
+           color: A newly allocated t_color structure.
+            - Block Behavior:
+                Extracts the red, green, and blue components from the start and end colors of the points (start.c: lor and end.c: lor).
+                Calculates the differences (delta_r, delta_g, delta_b) between the start and end color components to create a gradient.
+            - Concept:
+                Initializing color gradients is essential when drawing lines or surfaces with color transitions. The t_color structure holds the information necessary to generate smooth color transitions.
+
+        - color_pallet_init(int min_color, int max_color):
+
+            - Variables:
+           color: Similar to color_init(), but for predefined palettes based on minimum and maximum heights.
+            - Block Behavior:
+            Initializes the color palette based on the minimum and maximum color values, just like color_init().
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+render.c:
+This file handles rendering the map by drawing lines between adjacent points in the grid.
+
+    - Functions:
+
+        - colored_line(t_fdf *fdf, t_point *point, int color1, int color2):
+
+            - Variables:
+                c: Temporary color structure.
+            - Block Behavior:
+                Computes the color for the point based on its Z value and the specified color gradient.
+
+        - put_colors(t_fdf *fdf, t_point *point, int max, int min):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Assigns a color to the point based on its Z value, using a predefined color scheme.
+
+        - render_line(t_fdf *fdf, t_point start, t_point end):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Draws a line between the start and end points, applying transformations and projections, and interpolating colors along the line.
+
+        - render(t_fdf *fdf):
+
+            - Variables:
+                x, y: Loop counters for iterating over the map’s grid.
+            - Block Behavior:
+                Clears the image buffer, then iterates through the map’s points, drawing lines between adjacent points in both the X and Y directions.
+                After rendering the lines, it displays the image in the window.

@@ -1,0 +1,140 @@
+init.c:
+This file initializes the primary structures used in the program, including the map, image, and camera.
+
+    - Functions:
+
+        - init_fdf(char *file_name):
+
+            - Variables:
+                fdf: The main structure that holds the map, image, and camera.
+                file_name: The path to the map file.
+            - Block Behavior:
+                Allocates memory for fdf and initializes its components:
+                Reads the map from the file (read_map()).
+                Sets up MiniLibX for rendering (initializes the window and image).
+                Initializes the camera for viewing the map.
+                If any initialization step fails, it frees the allocated resources and calls the appropriate error handler.
+            - Concept:
+                This is the main initialization function for the program, combining all the core components needed to render the map.
+
+        - init_map(void):
+
+            - Variables:
+                map: A newly allocated t_map structure.
+            - Block Behavior:
+                Allocates and initializes the t_map structure with default values for max_x, max_y, max_z, and min_z.
+
+        - init_image(void *mlx):
+
+            - Variables:
+                image: A newly allocated t_image structure.
+            - Block Behavior:
+                Initializes the t_image structure for storing the rendered pixels. It uses MiniLibX to create an image buffer and retrieve
+                a pointer to the buffer for direct pixel manipulation.
+
+        - init_cam(t_map *map):
+
+            - Variables:
+                cam: A newly allocated t_cam structure.
+            - Block Behavior:
+                Initializes the camera with default settings for projection (isometric), scaling, translation, and rotation.
+                The camera’s initial position is centered in the window, and the map is scaled to fit.
+
+        - init_line(t_point start, t_point end, t_fdf *fdf):
+
+            - Variables:
+                line: A newly allocated t_line structure.
+            - Block Behavior:
+                Initializes a t_line structure representing a line between two points (start and end).
+                This structure will be used in drawing routines to calculate transformations and projections.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+init_utils.c:
+This file provides utility functions to initialize the map’s points, center the map at the origin, and scale it to fit the window.
+
+    - Functions:
+
+        - init_coordinates(int width, int depth):
+
+            - Variables:
+                coordinates: A dynamically allocated 2D array of t_point structures.
+                i, j: Loop counters for initializing the 2D array.
+            - Block Behavior:
+                Allocates memory for a 2D array of points with dimensions width (columns) and depth (rows).
+                Initializes each point’s x, y, z values and sets the color to 0 (uninitialized).
+                If memory allocation fails at any point, the function returns NULL.
+            - Concept:
+                This function prepares the grid that represents the 3D map, where each t_point structure corresponds to a vertex in the 3D space.
+
+        - center_to_origin(t_map *map):
+
+            - Variables:
+                x, y: Loop counters for iterating through the map’s points.
+            - Block Behavior:
+                Adjusts each point in the map so that the center of the map is at (0, 0). This is done by subtracting map->max_x / 2
+                and map->max_y / 2 from the x and y coordinates, respectively.
+                This ensures that the map is centered in the window, making it easier to apply transformations.
+            - Concept:
+                Centering the map at the origin simplifies many transformation calculations (scaling, rotation, translation),
+                as they can be performed relative to the center.
+
+        - scale_to_fit(t_map *map):
+
+            - Variables:
+                scale_x, scale_y: Calculated scaling factors for the X and Y axes.
+                scale_factor: The smaller of scale_x and scale_y.
+            - Block Behavior:
+                Computes the scaling factor required to fit the map within the window.
+                The map is scaled by comparing the window dimensions (WINDOW_WIDTH and WINDOW_HEIGHT) to the map dimensions (map->max_x and map->max_y).
+                The map is scaled down if necessary to ensure that it fits entirely within the window.
+            - Concept:
+                Scaling ensures that the map is neither too large nor too small for the window, providing a clear view of the entire map.
+
+        - reset_angle(t_fdf *fdf):
+
+            - Variables:
+           None.
+            - Block Behavior:
+            Resets the camera's rotation angles (alpha, beta, gamma) to 0, ensuring no rotation is applied to the map.
+
+        - reset(t_fdf *fdf):
+
+            - Variables:
+           None.
+            - Block Behavior:
+            Resets all camera parameters, including scaling, movement, and rotation. This brings the camera and map back to their default states.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+close.c:
+This file ensures that dynamically allocated memory is properly freed, and resources such as windows and images are destroyed when the program exits.
+
+    - Functions:
+
+        - close_coordinates(t_point **coordinates, int width):
+
+            - Variables:
+                i: Loop counter to iterate through the coordinates array.
+            - Block Behavior:
+                Loops through each row of the 2D array coordinates (up to width), freeing each row individually.
+                After freeing all rows, it frees the outer array.
+            - Concept:
+                Dynamic memory allocation in C requires explicit deallocation to avoid memory leaks. This function ensures that
+                the 2D array of points representing the map is freed correctly.
+
+        - close_all(t_fdf *fdf, int exit_code):
+
+            - Variables:
+                exit_code: Used to determine the exit message.
+            - Block Behavior:
+                Frees all dynamically allocated structures inside fdf, including the map, image, camera, and MiniLibX resources like the window and image.
+                Calls error_by_code(exit_code) to display an appropriate message, then exits the program.
+
+        - close_map(t_fdf *fdf, int exit_code):
+
+            - Variables:
+                exit_code: Same as above.
+            - Block Behavior:
+                Similar to close_all(), but specifically focuses on freeing the map-related data structures and closing the window and display.
+                Useful if an error occurs during the map parsing phase.

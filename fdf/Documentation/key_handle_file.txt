@@ -1,0 +1,43 @@
+key_handle.c:
+This file manages keyboard inputs, allowing the user to interactively transform (move, rotate, zoom) the map.
+
+    - Functions:
+
+        - key_translate(int keycode, t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Moves (translates) the map in the window based on the arrow keys.
+                Updates the camera's move_x and move_y values, shifting the map horizontally or vertically.
+
+        - key_scale(int keycode, t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Zooms in or out using the + and - keys, or adjusts the Z scale using the Z and X keys.
+                Modifies the camera’s scale_factor for uniform scaling and scale_z for Z-axis scaling.
+
+        - key_rotate(int keycode, t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Rotates the map around the X, Y, or Z axes using the W, S, A, D, Q, and E keys.
+                Updates the camera’s rotation angles (alpha, beta, gamma).
+
+        - key_project(int keycode, t_fdf *fdf):
+
+            - Variables:
+                None.
+            - Block Behavior:
+                Switches between different projection modes (isometric, perspective, top view, etc.) using the corresponding keys (P, I, O, L, K).
+
+        - key_handle(int keycode, t_fdf *fdf):
+
+            - Variables:
+                keycode: The code representing the key that was pressed.
+            - Block Behavior:
+                Dispatches the key input to the appropriate handler function, allowing the user to move, zoom, rotate, or switch projection modes.
+                If the ESC key is pressed, it exits the program.

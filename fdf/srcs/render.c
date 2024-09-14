@@ -22,6 +22,34 @@ static void	colored_line(t_fdf *fdf, t_point *point, int color1, int color2)
 	free(c);
 }
 
+static void	space_pressed(t_fdf *fdf, t_point *point, int max, int min)
+{
+	if (point->z > 0.85 * max)
+		colored_line(fdf, point, C_ORANGERED, C_RED);
+	else if (point->z > 0.7 * max && point->z <= 0.85 * max)
+		colored_line(fdf, point, C_ORANGE, C_ORANGERED);
+	else if (point->z > 0.5 * max && point->z <= 0.7 * max)
+		colored_line(fdf, point, C_GOLD, C_ORANGE);
+	else if (point->z > 0.3 * max && point->z <= 0.5 * max)
+		colored_line(fdf, point, C_YELLOW, C_GOLD);
+	else if (point->z > 0.1 * max && point->z <= 0.3 * max)
+		colored_line(fdf, point, C_LIME, C_YELLOW);
+	else if (point->z >= 0 && point->z <= 0.1 * max)
+		colored_line(fdf, point, C_GREEN, C_LIME);
+	else if (point->z >= -0.1 * min && point->z < 0)
+		colored_line(fdf, point, C_TEAL, C_GREEN);
+	else if (point->z >= -0.3 * min && point->z <= -0.1 * min)
+		colored_line(fdf, point, C_CYAN, C_TEAL);
+	else if (point->z >= -0.5 * min && point->z <= -0.3 * min)
+		colored_line(fdf, point, C_BLUE, C_CYAN);
+	else if (point->z >= -0.7 * min && point->z <= -0.5 * min)
+		colored_line(fdf, point, C_INDIGO, C_BLUE);
+	else if (point->z >= -0.85 * min && point->z <= -0.7 * min)
+		colored_line(fdf, point, C_VIOLET, C_INDIGO);
+	else
+		colored_line(fdf, point, C_PINK, C_VIOLET);
+}
+
 static void	put_colors(t_fdf *fdf, t_point *point, int max, int min)
 {
 	if (fdf->cam->color_pallet == FALSE)
@@ -31,30 +59,7 @@ static void	put_colors(t_fdf *fdf, t_point *point, int max, int min)
 	}
 	else
 	{
-		if (point->z > 0.85 * max)
-			colored_line(fdf, point, C_ORANGERED, C_RED);
-		else if (point->z > 0.7 * max && point->z <= 0.85 * max)
-			colored_line(fdf, point, C_ORANGE, C_ORANGERED);
-		else if (point->z > 0.5 * max && point->z <= 0.7 * max)
-			colored_line(fdf, point, C_GOLD, C_ORANGE);
-		else if (point->z > 0.3 * max && point->z <= 0.5 * max)
-			colored_line(fdf, point, C_YELLOW, C_GOLD);
-		else if (point->z > 0.1 * max && point->z <= 0.3 * max)
-			colored_line(fdf, point, C_LIME, C_YELLOW);
-		else if (point->z >= 0 && point->z <= 0.1 * max)
-			colored_line(fdf, point, C_GREEN, C_LIME);
-		else if (point->z >= -0.1 * min && point->z < 0)
-			colored_line(fdf, point, C_TEAL, C_GREEN);
-		else if (point->z >= -0.3 * min && point->z <= -0.1 * min)
-			colored_line(fdf, point, C_CYAN, C_TEAL);
-		else if (point->z >= -0.5 * min && point->z <= -0.3 * min)
-			colored_line(fdf, point, C_BLUE, C_CYAN);
-		else if (point->z >= -0.7 * min && point->z <=  -0.5 * min)
-			colored_line(fdf, point, C_INDIGO, C_BLUE);
-		else if (point->z >= -0.85 * min && point->z <= -0.7 * min)
-			colored_line(fdf, point, C_VIOLET, C_INDIGO);
-		else
-			colored_line(fdf, point, C_PINK, C_VIOLET);
+		space_pressed(fdf, point, max, min);
 	}
 }
 

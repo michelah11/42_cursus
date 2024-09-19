@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"unistd.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"pipex.h": "c"
 	}
 }
